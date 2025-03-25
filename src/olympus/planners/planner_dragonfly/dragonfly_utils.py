@@ -15,8 +15,6 @@ def infer_problem_type(param_space):
         problem_type = "fully_continuous"
     elif param_types.count("categorical") == len(param_types):
         problem_type = "fully_categorical"
-    elif np.logical_and(
-        "continuous" in param_types, "categorical" in param_types
-    ):
+    elif np.logical_and("continuous" in param_types, "categorical" in param_types):
         problem_type = "mixed"
     return problem_type

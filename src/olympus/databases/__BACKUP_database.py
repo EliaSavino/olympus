@@ -98,9 +98,7 @@ class Database:
                 fromlist=[f"Wrapper_{kind}"],
             )
         except ModuleNotFoundError:
-            Logger.log(
-                " ... proceeding with pickle database", "INFO", only_once=True
-            )
+            Logger.log(" ... proceeding with pickle database", "INFO", only_once=True)
             kind = "pickle"
             database = __import__(
                 f"olympus.databases.database_{kind}",

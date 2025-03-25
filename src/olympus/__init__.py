@@ -4,9 +4,7 @@ import os
 from glob import glob
 
 olympus_home = os.path.dirname(os.path.abspath(__file__))
-olympus_scratch = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), ".scratch"
-)
+olympus_scratch = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".scratch")
 __home__ = os.environ.get("OLYMPUS_HOME") or olympus_home
 __scratch__ = os.environ.get("OLYMPUS_SCRATCH") or olympus_scratch
 __emulator_path__ = os.environ.get("OLYMPUS_EMULATOR_PATH") or os.path.abspath(

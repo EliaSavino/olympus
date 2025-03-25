@@ -97,9 +97,7 @@ class NeuralNet(WrapperTensorflowModel):
                     tf.keras.layers.Dense(
                         self.targets_dim,
                         activation=activation_out,
-                        kernel_regularizer=tf.keras.regularizers.l2(
-                            l=self.l2_activity
-                        ),
+                        kernel_regularizer=tf.keras.regularizers.l2(l=self.l2_activity),
                     )
                 )
 
@@ -113,14 +111,10 @@ class NeuralNet(WrapperTensorflowModel):
                 self.pred_loss = tf.sqrt(
                     tf.reduce_mean(tf.square(self.y_pred - self.tf_y))
                 )
-                self.pred_loss += tf.reduce_mean(
-                    tf.abs(self.y_pred - self.tf_y)
-                )
+                self.pred_loss += tf.reduce_mean(tf.abs(self.y_pred - self.tf_y))
                 self.loss = self.pred_loss + self.reg_loss
 
-                self.optimizer = tf.compat.v1.train.AdamOptimizer(
-                    self.learning_rate
-                )
+                self.optimizer = tf.compat.v1.train.AdamOptimizer(self.learning_rate)
                 self.train_op = self.optimizer.minimize(self.loss)
 
                 self.init_op = tf.group(

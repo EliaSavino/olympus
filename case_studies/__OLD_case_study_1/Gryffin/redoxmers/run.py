@@ -15,15 +15,15 @@ from olympus.scalarizers import Scalarizer
 from olympus.planners.planner_gryffin import Gryffin
 
 
-sys.path.append('../../../')
+sys.path.append("../../../")
 from utils import save_pkl_file, load_data_from_pkl_and_continue
 
-#--------
+# --------
 # CONFIG
-#--------
+# --------
 
-dataset_name = 'redoxmers'
-planner_name = 'Gryffin'
+dataset_name = "redoxmers"
+planner_name = "Gryffin"
 
 budget = 200
 num_repeats = 40
@@ -33,10 +33,10 @@ num_repeats = 40
 data_all_repeats, missing_repeats = load_data_from_pkl_and_continue(num_repeats)
 
 
-for num_repeat in range(missing_repeats):  
-    print(f'\nTESTING {planner_name} ON {dataset_name} REPEAT {num_repeat}...\n')
-        
-    if dataset_name == 'dye_lasers':
+for num_repeat in range(missing_repeats):
+    print(f"\nTESTING {planner_name} ON {dataset_name} REPEAT {num_repeat}...\n")
+
+    if dataset_name == "dye_lasers":
         # fully categorical, lookup table
         dataset = Dataset(kind=dataset_name)
 
@@ -46,27 +46,27 @@ for num_repeat in range(missing_repeats):
         campaign = Campaign()
         campaign.set_param_space(dataset.param_space)
         campaign.set_value_space(dataset.value_space)
-        
+
         scalarizer = Scalarizer(
-            kind='Chimera', 
+            kind="Chimera",
             value_space=dataset.value_space,
-            goals=['max', 'min', 'max'],
+            goals=["max", "min", "max"],
             tolerances=[0.5, 0.5, 0.5],
-            absolutes=[False, False, False]
+            absolutes=[False, False, False],
         )
 
         evaluator = Evaluator(
-            planner=planner, 
+            planner=planner,
             emulator=dataset,
             campaign=campaign,
             scalarizer=scalarizer,
         )
-    
-    elif dataset_name == 'redoxmers':
+
+    elif dataset_name == "redoxmers":
         # fully categorical, lookup table
         dataset = Dataset(kind=dataset_name)
 
-        if planner_name == 'Gryffin':
+        if planner_name == "Gryffin":
             planner = Gryffin(use_descriptors=False)
         else:
             planner = Planner(kind=planner_name)
@@ -75,27 +75,26 @@ for num_repeat in range(missing_repeats):
         campaign = Campaign()
         campaign.set_param_space(dataset.param_space)
         campaign.set_value_space(dataset.value_space)
-        
+
         scalarizer = Scalarizer(
-            kind='Chimera', 
+            kind="Chimera",
             value_space=dataset.value_space,
-            goals=['min', 'min', 'min'],
-            tolerances=[25., 2.04, 0.0],
-            absolutes=[True, True, False]
+            goals=["min", "min", "min"],
+            tolerances=[25.0, 2.04, 0.0],
+            absolutes=[True, True, False],
         )
 
         evaluator = Evaluator(
-            planner=planner, 
+            planner=planner,
             emulator=dataset,
             campaign=campaign,
             scalarizer=scalarizer,
         )
-        
+
     evaluator.optimize(num_iter=budget)
 
     data_all_repeats.append(campaign)
 
     save_pkl_file(data_all_repeats)
 
-    print('Done!')
-
+    print("Done!")

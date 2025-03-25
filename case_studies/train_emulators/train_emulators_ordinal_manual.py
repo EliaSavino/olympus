@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from hyperopt import tpe, hp, fmin, STATUS_OK,Trials
+from hyperopt import tpe, hp, fmin, STATUS_OK, Trials
 from hyperopt.pyll.base import scope
 
 import olympus
@@ -16,15 +16,14 @@ from olympus.models import BayesNeuralNet
 from sklearn.metrics import r2_score, mean_squared_error
 
 
-
 params = {
-		'batch_size': 50,
-		'hidden_act': 'leaky_relu',
-		'hidden_depth': 5,
-		'hidden_nodes': 64,
-		'learning_rate': 8e-5,
-		'reg': 0.0001,
-		'out_act': 'sigmoid',
+    "batch_size": 50,
+    "hidden_act": "leaky_relu",
+    "hidden_depth": 5,
+    "hidden_nodes": 64,
+    "learning_rate": 8e-5,
+    "reg": 0.0001,
+    "out_act": "sigmoid",
 }
 
 # [INFO] Performance statistics based on transformed data [standardize, identity]:
@@ -40,12 +39,12 @@ params = {
 # [INFO] Test  RMSD   Score: 0.2256
 
 
-model  = BayesNeuralNet(task='ordinal',**params)
+model = BayesNeuralNet(task="ordinal", **params)
 emulator = Emulator(
-	dataset='vapdiff_crystal',
-	model=model,
-	feature_transform='standardize',
-	target_transform='identity',
+    dataset="vapdiff_crystal",
+    model=model,
+    feature_transform="standardize",
+    target_transform="identity",
 )
 
 
@@ -55,4 +54,4 @@ print(scores)
 
 
 best_emulator = emulator
-best_emulator.save(f'emulators_ordinal/emulator_vapdiff_crystal_BayesNeuralNet')
+best_emulator.save(f"emulators_ordinal/emulator_vapdiff_crystal_BayesNeuralNet")

@@ -17,7 +17,7 @@ class DiscreteAckley(AbstractSurface):
             noise (Noise): Noise object that injects noise into the evaluations of the surface. Default is None.
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -54,9 +54,7 @@ class DiscreteAckley(AbstractSurface):
 
         domain = np.linspace(-50, 50, 10)
         dx = domain[1] - domain[0]
-        imaged = np.array(
-            [np.amin(np.abs(element - domain)) for element in params]
-        )
+        imaged = np.array([np.amin(np.abs(element - domain)) for element in params])
         new_res = 5
         for bound in bounds[::-1]:
             if np.amax(np.abs(imaged)) < bound:

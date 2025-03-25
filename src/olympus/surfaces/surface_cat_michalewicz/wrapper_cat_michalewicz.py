@@ -8,7 +8,6 @@ from olympus.surfaces import AbstractSurface
 
 
 class CatMichalewicz(AbstractSurface):
-
     """
             The Michalewicz surface is generalized to categorical spaces from the Michalewicz function. This surface features well-defined options for each dimension which yield significantly better performances than
     others. In addition, the number of pseudo-local minima scales factorially with the number of dimensions
@@ -19,7 +18,7 @@ class CatMichalewicz(AbstractSurface):
     def __init__(self, param_dim, num_opts, descriptors=None):
         """ """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(param_type="categorical", **locals())
 
     @property
@@ -33,9 +32,9 @@ class CatMichalewicz(AbstractSurface):
     def michalewicz(self, vector, m=10.0):
         result = 0.0
         for index, element in enumerate(vector):
-            result += -np.sin(element) * np.sin(
-                (index + 1) * element**2 / np.pi
-            ) ** (2 * m)
+            result += -np.sin(element) * np.sin((index + 1) * element**2 / np.pi) ** (
+                2 * m
+            )
         return result
 
     def _run(self, params):

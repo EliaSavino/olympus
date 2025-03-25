@@ -3,7 +3,6 @@
 import silence_tensorflow
 
 
-
 silence_tensorflow.silence_tensorflow()
 import tensorflow as tf
 import tensorflow_probability as tfp

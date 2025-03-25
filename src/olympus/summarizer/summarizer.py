@@ -101,12 +101,8 @@ class Summarizer:
         Returns:
                 None
         """
-        datasets = list(
-            set(campaign["dataset_kind"] for campaign in campaigns)
-        )
-        planners = list(
-            set(campaign["planner_kind"] for campaign in campaigns)
-        )
+        datasets = list(set(campaign["dataset_kind"] for campaign in campaigns))
+        planners = list(set(campaign["planner_kind"] for campaign in campaigns))
         with open(filename, "w") as f:
             f.write("%==== DATASETS ======================\n\n")
             for dataset in datasets:
@@ -172,9 +168,7 @@ class Summarizer:
         else:
             planners = list(set([c.planner_kind for c in self.campaigns]))
             df = pd.DataFrame({"planner": planners})
-            latex_tab = df.to_latex(
-                index=False, caption=caption, label="tab:planners"
-            )
+            latex_tab = df.to_latex(index=False, caption=caption, label="tab:planners")
             # write the table
             with open(filename, "w") as f:
                 f.write(latex_tab)

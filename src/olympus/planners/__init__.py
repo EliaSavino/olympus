@@ -18,9 +18,7 @@ class PlannerLoader:
     def __getattr__(self, attr):
         if attr in ["Planner", "AbstractPlanner", "CustomPlanner"]:
             attr_file = PlannerLoader.class_to_file(attr)
-            module = __import__(
-                f"olympus.planners.{attr_file}", fromlist=[attr]
-            )
+            module = __import__(f"olympus.planners.{attr_file}", fromlist=[attr])
             _class = getattr(module, attr)
             setattr(self, attr, _class)
             return _class
@@ -57,18 +55,14 @@ class PlannerLoader:
     @staticmethod
     def import_planner(attr):
         attr_file = PlannerLoader.class_to_file(attr)
-        module = __import__(
-            f"olympus.planners.planner_{attr_file}", fromlist=[attr]
-        )
+        module = __import__(f"olympus.planners.planner_{attr_file}", fromlist=[attr])
         _class = getattr(module, attr)
         return _class
 
     @staticmethod
     def get_param_types(name):
         file = PlannerLoader.class_to_file(name)
-        module = __import__(
-            f"olympus.planners.planner_{file}", fromlist=[name]
-        )
+        module = __import__(f"olympus.planners.planner_{file}", fromlist=[name])
         return module.param_types
 
     def _find_planners(self):
@@ -84,9 +78,7 @@ class PlannerLoader:
                 planner_name = dir_name.split("/")[-1][8:]
 
             self.planner_files.append(planner_name)
-            self.planner_names.append(
-                PlannerLoader.file_to_class(planner_name)
-            )
+            self.planner_names.append(PlannerLoader.file_to_class(planner_name))
 
     def get_planners_list(self):
         return sorted(self.planner_names)

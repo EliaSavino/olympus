@@ -31,7 +31,5 @@ class Sobol(AbstractPlanner):
     def _ask(self):
         vector, self.seed = i4_sobol(self.dim, self.seed)
         for index, param in enumerate(self.param_space):
-            vector[index] = (param.high - param.low) * vector[
-                index
-            ] + param.low
+            vector[index] = (param.high - param.low) * vector[index] + param.low
         return ParameterVector().from_array(vector, self.param_space)

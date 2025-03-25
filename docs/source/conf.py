@@ -212,17 +212,13 @@ def setup(app):
                 items = []
                 for name in dir(obj):
                     try:
-                        documenter = get_documenter(
-                            safe_getattr(obj, name), obj
-                        )
+                        documenter = get_documenter(safe_getattr(obj, name), obj)
                     except AttributeError:
                         continue
                     if documenter.objtype == typ:
                         items.append(name)
                 public = [
-                    x
-                    for x in items
-                    if x in include_public or not x.startswith("_")
+                    x for x in items if x in include_public or not x.startswith("_")
                 ]
                 return public, items
 
@@ -230,14 +226,10 @@ def setup(app):
                 clazz = self.arguments[0]
                 try:
                     (module_name, class_name) = clazz.rsplit(".", 1)
-                    m = __import__(
-                        module_name, globals(), locals(), [class_name]
-                    )
+                    m = __import__(module_name, globals(), locals(), [class_name])
                     c = getattr(m, class_name)
                     if "methods" in self.options:
-                        _, methods = self.get_members(
-                            c, "method", ["__init__"]
-                        )
+                        _, methods = self.get_members(c, "method", ["__init__"])
 
                         self.content = [
                             "~%s.%s" % (clazz, method)

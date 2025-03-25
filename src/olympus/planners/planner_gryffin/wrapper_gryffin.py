@@ -17,7 +17,7 @@ class Gryffin(AbstractPlanner):
         use_descriptors=True,
         auto_desc_gen=False,
         batches=1,
-        batch_size=1, 
+        batch_size=1,
         sampling_strategies=[-1, 1],
         boosted=False,
         random_seed=None,
@@ -93,9 +93,7 @@ class Gryffin(AbstractPlanner):
         for obs_ix, param in enumerate(self._params):
             # format the observations
             obs = {}
-            for param_val, space_true in zip(
-                param, self.param_space.parameters
-            ):
+            for param_val, space_true in zip(param, self.param_space.parameters):
                 if space_true.type == "categorical":
                     obs[space_true.name] = param_val
                 else:
@@ -123,11 +121,12 @@ class Gryffin(AbstractPlanner):
                         str(param["options"][ix]): param["descriptors"][ix]
                         for ix in range(len(param["options"]))
                     }
-            
+
                 else:
                     # user overides the use of descriptors
                     category_details = {
-                        str(param["options"][ix]): None for ix in range(len(param["options"]))
+                        str(param["options"][ix]): None
+                        for ix in range(len(param["options"]))
                     }
                 param["category_details"] = category_details
                 del param["options"]
@@ -146,10 +145,9 @@ class Gryffin(AbstractPlanner):
                 "verbosity": self.verbosity,
             },
             "parameters": params,
-            "objectives": [{"name": "obj", "goal": "min"}], # always minimization,
+            "objectives": [{"name": "obj", "goal": "min"}],  # always minimization,
         }
         self.gryffin = ActualGryffin(config_dict=config)
-
 
     def _ask(self):
 
@@ -157,17 +155,19 @@ class Gryffin(AbstractPlanner):
 
         # check which params to return - select alternating sampling strategy
         select_ix = len(self._values) % len(self.sampling_strategies)
-        sampling_strats = np.tile(self.sampling_strategies, 10)[select_ix:select_ix+self.batch_size]
-
+        sampling_strats = np.tile(self.sampling_strategies, 10)[
+            select_ix : select_ix + self.batch_size
+        ]
 
         # query for new parameters
         params = self.gryffin.recommend(
             observations=self._observations,
             sampling_strategies=sampling_strats,
         )
-        
 
-        return [ParameterVector().from_dict(param, self.param_space) for param in params]
+        return [
+            ParameterVector().from_dict(param, self.param_space) for param in params
+        ]
 
 
 # DEBUG:

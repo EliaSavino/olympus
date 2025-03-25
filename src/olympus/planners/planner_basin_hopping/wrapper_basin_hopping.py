@@ -321,9 +321,7 @@ class BasinHopping(AbstractPlanner):
     def create_optimizer(self):
         from scipy.optimize import basinhopping
 
-        _ = basinhopping(
-            self._priv_evaluator, x0=self.init_guess, **self.kwargs
-        )
+        _ = basinhopping(self._priv_evaluator, x0=self.init_guess, **self.kwargs)
         self.is_converged = True
 
     def _ask(self):

@@ -15,9 +15,7 @@ from olympus.planners import SteepestDescent
         (1e-3, 1e-5, None, [0.5, 0.5]),
     ],
 )
-def test_planner_ask_tell(
-    two_param_space, learning_rate, dx, random_seed, init_guess
-):
+def test_planner_ask_tell(two_param_space, learning_rate, dx, random_seed, init_guess):
     planner = SteepestDescent(
         learning_rate=1e-3, dx=1e-5, random_seed=None, init_guess=None
     )

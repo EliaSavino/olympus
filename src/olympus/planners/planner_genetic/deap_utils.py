@@ -4,6 +4,7 @@ from deap import algorithms, base, creator, tools
 
 data_all_repeats, missing_repeats = load_data_from_pkl_and_continue(repeats)
 
+
 # --------------
 # DEAP Functions
 # --------------
@@ -31,9 +32,7 @@ def customMutation(
                 bound_high = attr.args[1]
                 scale = (bound_high - bound_low) * continuous_scale
                 individual[i] += np.random.normal(loc=0.0, scale=scale)
-                individual[i] = _project_bounds(
-                    individual[i], bound_low, bound_high
-                )
+                individual[i] = _project_bounds(individual[i], bound_low, bound_high)
             elif "discrete" in vartype:
                 # add/substract an integer by rounding Gaussian perturbation
                 # scale is 0.1 of domain range
@@ -42,9 +41,7 @@ def customMutation(
                 scale = (bound_high - bound_low) * discrete_scale
                 delta = np.random.normal(loc=0.0, scale=scale)
                 individual[i] += np.round(delta, decimals=0)
-                individual[i] = _project_bounds(
-                    individual[i], bound_low, bound_high
-                )
+                individual[i] = _project_bounds(individual[i], bound_low, bound_high)
             elif "categorical" in vartype:
                 # resample a random category
                 individual[i] = attr()
@@ -132,18 +129,14 @@ def apply_feasibility_constraint(child, parent, param_space):
             parent_continuous_norm = (parent_continuous - lowers) * inv_range
             child_continuous_norm = (child_continuous - lowers) * inv_range
             # check all differences are within 1% of range
-            if all(
-                np.abs(parent_continuous_norm - child_continuous_norm) < 0.01
-            ):
+            if all(np.abs(parent_continuous_norm - child_continuous_norm) < 0.01):
                 break
 
             counter += 1
             if (
                 counter > 150
             ):  # convergence above should be reached in 128 iterations max
-                raise ValueError(
-                    "constrained evolution procedure ran into trouble"
-                )
+                raise ValueError("constrained evolution procedure ran into trouble")
 
     # last parent values are the feasible ones
     new_vector[continuous_mask] = parent_continuous
@@ -205,9 +198,7 @@ def create_deap_toolbox(param_space):
             )
 
         elif vartype in "categorical":
-            toolbox.register(
-                f"x{i}_{vartype}", np.random.choice, param["categories"]
-            )
+            toolbox.register(f"x{i}_{vartype}", np.random.choice, param["categories"])
 
         attr = getattr(toolbox, f"x{i}_{vartype}")
         attrs_list.append(attr)
@@ -251,9 +242,7 @@ def propose_randomly(num_proposals, param_space):
                 sample.append(p)
                 raw_sample.append(p)
             elif param.type == "discrete":
-                num_options = int(
-                    ((param.high - param.low) / param.stride) + 1
-                )
+                num_options = int(((param.high - param.low) / param.stride) + 1)
                 options = np.linspace(param.low, param.high, num_options)
                 p = np.random.choice(options, size=None, replace=False)
                 sample.append(p)

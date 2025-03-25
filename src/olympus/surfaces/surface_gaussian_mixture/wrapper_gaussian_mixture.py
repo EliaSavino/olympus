@@ -45,15 +45,13 @@ class GaussianMixture(AbstractSurface):
             param_dim, num_gauss, means, covariances
         )
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
         np.random.seed(self.random_seed)  # set random seed
         self._create_gaussian_mixture()
 
     @staticmethod
-    def _determine_param_dim_and_num_gauss(
-        param_dim, num_gauss, means, covariances
-    ):
+    def _determine_param_dim_and_num_gauss(param_dim, num_gauss, means, covariances):
 
         # no means and covs provided
         if means is None and covariances is None:
@@ -145,9 +143,7 @@ class GaussianMixture(AbstractSurface):
         if self.diagonal_cov is False:
             for i in range(self._num_gauss):
                 # generate random positive semi-definite matrix, scale by sigma_scale
-                A = np.random.rand(
-                    len(self.param_space), len(self.param_space)
-                )
+                A = np.random.rand(len(self.param_space), len(self.param_space))
                 alpha = 0.01
                 cov = np.dot(A, A.transpose()) + alpha * np.diag(
                     np.ones(len(self.param_space))
@@ -156,9 +152,7 @@ class GaussianMixture(AbstractSurface):
         elif self.diagonal_cov is True:
             for i in range(self._num_gauss):
                 diag = (
-                    np.random.uniform(
-                        low=0, high=1, size=len(self.param_space)
-                    )
+                    np.random.uniform(low=0, high=1, size=len(self.param_space))
                     * self.cov_scale
                 )
                 cov = np.diag(np.array(diag))

@@ -11,8 +11,6 @@ class ObjectParameter(Object):
     ATT_NAME = {"type": "string", "default": "parameter"}
 
 
-
-
 class ObjectParameterContinuous(ObjectParameter):
 
     ATT_TYPE = {
@@ -29,7 +27,6 @@ class ObjectParameterContinuous(ObjectParameter):
 
     def _validate(self):
         return self.low < self.high
-
 
 
 class ObjectParameterCategorical(ObjectParameter):
@@ -75,23 +72,20 @@ class ObjectParameterDiscrete(ObjectParameter):
         return contains
 
     def _validate(self):
-        if len(self.options)!=0:
+        if len(self.options) != 0:
             # if we have some options, forget about the stride parameter
             # just make sure options are in order
             # reset bounds based on the options
             self.low = np.amin(self.options)
             self.high = np.amax(self.options)
             return self.options == sorted(self.options)
-            
+
         else:
             # we have use the stride parameter set by the user
             return all(
                 [
                     self.low < self.high,
-                    *[
-                        isinstance(_, float)
-                        for _ in (self.low, self.high, self.stride)
-                    ],
+                    *[isinstance(_, float) for _ in (self.low, self.high, self.stride)],
                 ]
             )
 
@@ -101,8 +95,7 @@ class ObjectParameterDiscrete(ObjectParameter):
 
 
 class ObjectParameterOrdinal(ObjectParameter):
-
-    ''' Ordinal parameters are similar to categorical parameters, except that they
+    """Ordinal parameters are similar to categorical parameters, except that they
     feature a clear ordering between the options. NOTE: Olympus currently only
     supports ordinal parameters as target objectives.
 
@@ -116,7 +109,7 @@ class ObjectParameterOrdinal(ObjectParameter):
         name="my_value"
         options=["no_crystals", "fine_powder", "small_crystals", "large_crystals"]
     )
-    '''
+    """
 
     ATT_TYPE = {
         "type": "string",
@@ -132,11 +125,9 @@ class ObjectParameterOrdinal(ObjectParameter):
         # TODO: this is a hack
         return len(self.options) >= 0
 
-
     @property
     def volume(self):
         return len(self.options)
-
 
 
 class Parameter(ObjectParameter):
@@ -166,10 +157,8 @@ class Parameter(ObjectParameter):
             )
             Logger.log(message, "ERROR")
 
-
     def __str__(self):
         return self.KINDS[self.kind].__str__(self)
-
 
 
 # ======================================================================

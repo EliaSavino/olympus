@@ -50,9 +50,7 @@ class Evaluator(Object):
             self.emulator_type = "analytic"
             self.emulator = surface
         else:
-            Logger.log(
-                "One of emulator or surface needs to be provided", "FATAL"
-            )
+            Logger.log("One of emulator or surface needs to be provided", "FATAL")
 
         #        if isinstance(self.emulator, Emulator):
         #            self.emulator_type = 'numerical'
@@ -89,9 +87,8 @@ class Evaluator(Object):
 
         if self.campaign is not None:
             self.campaign.set_planner_specs(planner)
-            if self.emulator_type=='numerical':
+            if self.emulator_type == "numerical":
                 self.campaign.set_emulator_specs(emulator)
-
 
     def optimize(self, num_iter=1):
         """Optimizes an objective for a fixed number of iterations.
@@ -108,7 +105,7 @@ class Evaluator(Object):
 
             # if we have ordinal objectives, transform the string-representation to
             # integer for interaction with planners
-            if self.emulator.task == 'ordinal':
+            if self.emulator.task == "ordinal":
                 self.campaign.observations_to_int()
 
             if self.emulator.parameter_constriants == "simplex":
@@ -131,7 +128,7 @@ class Evaluator(Object):
                 self.campaign.observations_to_simpl()
 
             # transform back to string representation]
-            if self.emulator.task == 'ordinal':
+            if self.emulator.task == "ordinal":
                 self.campaign.observations_to_str()
 
             # get measurement from emulator/surface
@@ -145,9 +142,7 @@ class Evaluator(Object):
             # TODO: we probably do not need this check for NoneType Campaign here... consider removing
             if self.campaign is not None:
                 if self.campaign.is_moo:
-                    self.campaign.add_and_scalarize(
-                        params, values, self.scalarizer
-                    )
+                    self.campaign.add_and_scalarize(params, values, self.scalarizer)
                 else:
                     self.campaign.add_observation(params, values)
 

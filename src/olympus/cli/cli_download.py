@@ -15,9 +15,7 @@ from .connector_server import ConnectorServer
 
 class ParserDownload:
     def __init__(self, subparsers):
-        self.parser = subparsers.add_parser(
-            "download", help=">> help for download"
-        )
+        self.parser = subparsers.add_parser("download", help=">> help for download")
         self.group = self.parser.add_mutually_exclusive_group(required=True)
         self.group.add_argument(
             "-n",

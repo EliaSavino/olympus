@@ -19,15 +19,14 @@ from olympus.planners import ParticleSwarms
 #       unfortunately I understand too little about pytest to fix this;
 #       if you know what's going on, could you please give me a hint?
 
+
 # Matteo: mmm I am not sure about this but it may be a pytest bug:
 # https://github.com/pytest-dev/pytest/issues/5743
 # The tests seem to run fine with the '-s' flag: pytest -s tests/test_planners
 # The easiest solution/test would be to try switch off the pyswarm logging/messages, but I have not found a way to
 # do this!
 def _test_planner_ask_tell(two_param_space, max_iters, options, particles):
-    planner = ParticleSwarms(
-        max_iters=max_iters, options=options, particles=particles
-    )
+    planner = ParticleSwarms(max_iters=max_iters, options=options, particles=particles)
     planner.set_param_space(param_space=two_param_space)
     param = planner.ask()
     value = ParameterVector().from_dict({"objective": 0.0})

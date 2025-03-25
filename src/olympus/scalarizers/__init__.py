@@ -16,9 +16,7 @@ class ScalarizerLoader:
     def __getattr__(self, attr):
         if attr in ["Scalarizer", "AbstractScalarizer"]:
             attr_file = ScalarizerLoader.class_to_file(attr)
-            module = __import__(
-                f"olympus.scalarizers.{attr_file}", fromlist=[attr]
-            )
+            module = __import__(f"olympus.scalarizers.{attr_file}", fromlist=[attr])
             _class = getattr(module, attr)
             setattr(self, attr, _class)
             return _class

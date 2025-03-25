@@ -61,9 +61,7 @@ class Phoenics(AbstractPlanner):
         )
         self._observations = []
         for _, param in enumerate(self._params):
-            obs = (
-                ParameterVector().from_array(param, self.param_space).to_dict()
-            )
+            obs = ParameterVector().from_array(param, self.param_space).to_dict()
             for key, value in obs.items():
                 obs[key] = np.array([value])
             obs["obj"] = self._values[_]

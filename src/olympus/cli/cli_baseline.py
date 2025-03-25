@@ -12,9 +12,7 @@ from .connector_server import ConnectorServer
 
 class ParserBaseline:
     def __init__(self, subparsers):
-        self.parser = subparsers.add_parser(
-            "baseline", help=">> help for baseline"
-        )
+        self.parser = subparsers.add_parser("baseline", help=">> help for baseline")
         self.parser.add_argument("--get", dest="get", action="store_true")
         self.parser.set_defaults(get=False)
 

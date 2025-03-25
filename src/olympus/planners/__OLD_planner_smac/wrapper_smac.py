@@ -40,9 +40,7 @@ class Smac(AbstractPlanner):
         self.cs = ConfigurationSpace()
         for param in param_space:
             if param.type == "continuous":
-                var = UniformFloatHyperparameter(
-                    param.name, param.low, param.high
-                )
+                var = UniformFloatHyperparameter(param.name, param.low, param.high)
                 self.cs.add_hyperparameter(var)
         self.runhistory = RunHistory(
             overwrite_existing_runs=True
@@ -113,17 +111,17 @@ class Smac(AbstractPlanner):
             cutoff=self.scenario.cutoff,
             deterministic=self.scenario.deterministic,
             run_obj_time=self.scenario.run_obj == "runtime",
-            always_race_against=self.scenario.cs.get_default_configuration()
-            if self.scenario.always_race_default
-            else None,
+            always_race_against=(
+                self.scenario.cs.get_default_configuration()
+                if self.scenario.always_race_default
+                else None
+            ),
             instance_specifics=self.scenario.instance_specific,
             minR=self.scenario.minR,
             maxR=self.scenario.maxR,
         )
 
-        types, bounds = get_types(
-            self.scenario.cs, self.scenario.feature_array
-        )
+        types, bounds = get_types(self.scenario.cs, self.scenario.feature_array)
         model = RandomForestWithInstances(
             types=types,
             bounds=bounds,
@@ -281,7 +279,5 @@ if __name__ == "__main__":
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

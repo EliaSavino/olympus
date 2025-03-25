@@ -99,12 +99,8 @@ class Dragonfly(AbstractPlanner):
 
         # pick function caller etc. based on the problem type
         if self.problem_type == "fully_continuous":
-            self.func_caller = EuclideanFunctionCaller(
-                None, self.config.domain
-            )
-            self.opt = gp_bandit.EuclideanGPBandit(
-                self.func_caller, ask_tell_mode=True
-            )
+            self.func_caller = EuclideanFunctionCaller(None, self.config.domain)
+            self.opt = gp_bandit.EuclideanGPBandit(self.func_caller, ask_tell_mode=True)
 
         elif self.problem_type in [
             "fully_categorical",
@@ -116,9 +112,7 @@ class Dragonfly(AbstractPlanner):
                 self.config.domain,
                 domain_orderings=self.config.domain_orderings,
             )
-            self.opt = gp_bandit.CPGPBandit(
-                self.func_caller, ask_tell_mode=True
-            )
+            self.opt = gp_bandit.CPGPBandit(self.func_caller, ask_tell_mode=True)
         else:
             raise NotImplementedError
 
@@ -270,7 +264,5 @@ if __name__ == "__main__":
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

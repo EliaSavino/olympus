@@ -13,7 +13,6 @@ from olympus.databases import AbstractDatabase
 
 
 class Wrapper_pickle(AbstractDatabase):
-
     """implements a simple database using pickle
 
     Architecture of the database:

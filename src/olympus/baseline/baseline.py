@@ -38,9 +38,7 @@ class Baseline(Object):
                     "WARNING",
                 )
         for dataset in datasets:
-            Logger.log(
-                f"could not find summary for dataset: {dataset}", "WARNING"
-            )
+            Logger.log(f"could not find summary for dataset: {dataset}", "WARNING")
 
     def _register_dbs(self, datasets_):
         # only register complete baselines
@@ -81,9 +79,7 @@ class Baseline(Object):
         if dataset in self.baseline_summaries.keys():
             return self.baseline_summaries[dataset]
         else:
-            Logger.log(
-                f"could not find summary for dataset: {dataset}", "ERROR"
-            )
+            Logger.log(f"could not find summary for dataset: {dataset}", "ERROR")
 
     def get_db(self, dataset):
         if dataset in self.baseline_dbs.keys():
@@ -92,9 +88,7 @@ class Baseline(Object):
             self._load_baseline_db(dataset)
             return self.baseline_dbs[dataset]
         else:
-            Logger.log(
-                f"could not find baseline db for dataset: {dataset}", "ERROR"
-            )
+            Logger.log(f"could not find baseline db for dataset: {dataset}", "ERROR")
 
     def get_campaigns(self, dataset):
         if dataset in self.baseline_dbs.keys():
@@ -103,9 +97,7 @@ class Baseline(Object):
             self._load_baseline_db(dataset)
             return [campaign for campaign in self.baseline_dbs[dataset]]
         else:
-            Logger.log(
-                f"could not find baseline db for dataset: {dataset}", "ERROR"
-            )
+            Logger.log(f"could not find baseline db for dataset: {dataset}", "ERROR")
 
     def get(self, dataset, kind="summary"):
         """Retrieves baseline for a given dataset

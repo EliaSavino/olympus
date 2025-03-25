@@ -13,15 +13,15 @@ from olympus.planners import Planner
 from olympus.scalarizers import Scalarizer
 
 
-sys.path.append('../../../')
+sys.path.append("../../../")
 from utils import save_pkl_file, load_data_from_pkl_and_continue
 
-#--------
+# --------
 # CONFIG
-#--------
+# --------
 
-dataset_name = 'suzuki_edbo'
-planner_name = 'Botorch'
+dataset_name = "suzuki_edbo"
+planner_name = "Botorch"
 
 budget = 200
 num_repeats = 40
@@ -32,13 +32,13 @@ data_all_repeats, missing_repeats = load_data_from_pkl_and_continue(num_repeats)
 
 
 for num_repeat in range(missing_repeats):
-        
-    print(f'\nTESTING {planner_name} ON {dataset_name} REPEAT {num_repeat} ...\n')
-    
-    if dataset_name == 'suzuki': 
-        
+
+    print(f"\nTESTING {planner_name} ON {dataset_name} REPEAT {num_repeat} ...\n")
+
+    if dataset_name == "suzuki":
+
         # fully continuous, emulated dataset
-        emulator = Emulator(dataset=dataset_name, model='BayesNeuralNet')
+        emulator = Emulator(dataset=dataset_name, model="BayesNeuralNet")
         planner = Planner(kind=planner_name)
         planner.set_param_space(emulator.param_space)
 
@@ -47,13 +47,13 @@ for num_repeat in range(missing_repeats):
         campaign.set_value_space(emulator.value_space)
 
         evaluator = Evaluator(
-            planner=planner, 
+            planner=planner,
             emulator=emulator,
             campaign=campaign,
         )
-        
-    elif dataset_name == 'suzuki_edbo':
-        
+
+    elif dataset_name == "suzuki_edbo":
+
         # fully categorical, lookup table
         dataset = Dataset(kind=dataset_name)
 
@@ -65,40 +65,40 @@ for num_repeat in range(missing_repeats):
         campaign.set_value_space(dataset.value_space)
 
         evaluator = Evaluator(
-            planner=planner, 
+            planner=planner,
             emulator=dataset,
             campaign=campaign,
         )
-        
-    elif dataset_name in ['suzuki_i', 'suzuki_ii', 'suzuki_iii', 'suzuki_iv']:
-        
+
+    elif dataset_name in ["suzuki_i", "suzuki_ii", "suzuki_iii", "suzuki_iv"]:
+
         # mixed parameter, emulator, multi-objective optimization
-        emulator = Emulator(dataset=dataset_name, model='BayesNeuralNet')
+        emulator = Emulator(dataset=dataset_name, model="BayesNeuralNet")
         planner = Planner(kind=planner_name)
         planner.set_param_space(emulator.param_space)
 
         campaign = Campaign()
         campaign.set_param_space(emulator.param_space)
         campaign.set_value_space(emulator.value_space)
-        
+
         scalarizer = Scalarizer(
-            kind='Chimera', 
+            kind="Chimera",
             value_space=emulator.value_space,
-            goals=['max', 'max'],
+            goals=["max", "max"],
             tolerances=[0.9, 0.0],
-            absolutes=[False, False]
+            absolutes=[False, False],
         )
 
         evaluator = Evaluator(
-            planner=planner, 
+            planner=planner,
             emulator=emulator,
             campaign=campaign,
             scalarizer=scalarizer,
         )
-    
+
     evaluator.optimize(num_iter=budget)
-    
+
     data_all_repeats.append(campaign)
     save_pkl_file(data_all_repeats)
-    
-    print('Done!')
+
+    print("Done!")

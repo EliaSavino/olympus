@@ -14,7 +14,7 @@ class Levy(AbstractSurface):
             noise (Noise): Noise object that injects noise into the evaluations of the surface. Default is None.
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -37,9 +37,7 @@ class Levy(AbstractSurface):
         for i, x in enumerate(params):
             if i + 1 == len(params):
                 break
-            result += ((w[i] - 1) ** 2) * (
-                1 + 10 * np.sin(np.pi * w[i] + 1) ** 2
-            )
+            result += ((w[i] - 1) ** 2) * (1 + 10 * np.sin(np.pi * w[i] + 1) ** 2)
 
         if self.noise is None:
             return result

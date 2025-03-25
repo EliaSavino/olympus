@@ -57,15 +57,11 @@ class ParameterSpace:
         """parameter bounds only apply for discrete and continuous
         valued parameters
         """
-        if not np.all(
-            [param.type in ["discrete", "continuous"] for param in self]
-        ):
+        if not np.all([param.type in ["discrete", "continuous"] for param in self]):
             message = "Parameter space contains at least one categorical variable. Returning bounds for continuous and discrete parameters"
             Logger.log(message, "WARNING")
         elif np.all([param.type == "categorical" for param in self]):
-            message = (
-                "Fully categorical parameter space. No parameter bounds needed"
-            )
+            message = "Fully categorical parameter space. No parameter bounds needed"
             Logger.log(message, "WARNING")
 
         return [
@@ -79,45 +75,29 @@ class ParameterSpace:
         """parameter bounds only apply for discrete and continuous
         valued parameters
         """
-        if not np.all(
-            [param.type in ["discrete", "continuous"] for param in self]
-        ):
+        if not np.all([param.type in ["discrete", "continuous"] for param in self]):
             message = "Parameter space contains at least one categorical variable. Returning bounds for continuous and discrete parameters"
             Logger.log(message, "WARNING")
         elif np.all([param.type == "categorical" for param in self]):
-            message = (
-                "Fully categorical parameter space. No parameter bounds needed"
-            )
+            message = "Fully categorical parameter space. No parameter bounds needed"
             Logger.log(message, "WARNING")
 
-        return [
-            param.low
-            for param in self
-            if param.type in ["discrete", "continuous"]
-        ]
+        return [param.low for param in self if param.type in ["discrete", "continuous"]]
 
     @property
     def param_uppers(self):
         """parameter bounds only apply for discrete and continuous
         valued parameters
         """
-        if not np.all(
-            [param.type in ["discrete", "continuous"] for param in self]
-        ):
+        if not np.all([param.type in ["discrete", "continuous"] for param in self]):
             message = "Parameter space contains at least one categorical variable. Returning bounds for continuous and discrete parameters"
             Logger.log(message, "WARNING")
         elif np.all([param.type == "categorical" for param in self]):
-            message = (
-                "Fully categorical parameter space. No parameter bounds needed"
-            )
+            message = "Fully categorical parameter space. No parameter bounds needed"
             Logger.log(message, "WARNING")
 
         return np.array(
-            [
-                param.high
-                for param in self
-                if param.type in ["discrete", "continuous"]
-            ]
+            [param.high for param in self if param.type in ["discrete", "continuous"]]
         )
 
     @property
@@ -126,14 +106,10 @@ class ParameterSpace:
         if not np.all([param.type == "categorical" for param in self]):
             message = "Parameter space contains at least one discrete or continuous parameter. Returning options for continuous and discrete parameters"
             Logger.log(message, "WARNING")
-        elif np.all(
-            [param.type in ["discrete", "continuous"] for param in self]
-        ):
+        elif np.all([param.type in ["discrete", "continuous"] for param in self]):
             message = "Fully discrete and continuous parameter space. No parameter options needed"
             Logger.log(message, "WARNING")
-        return np.array(
-            [param.options for param in self if self.type == "categorcial"]
-        )
+        return np.array([param.options for param in self if self.type == "categorcial"])
 
     def _add_param(self, param):
         # check if we already have that param
@@ -197,8 +173,8 @@ class ParameterSpace:
             if param.type == "continuous":
                 is_valid = is_valid and param.low <= param_val
                 is_valid = is_valid and param.high >= param_val
-            elif param.type == 'discrete':
-                if len(param.options)!=0:
+            elif param.type == "discrete":
+                if len(param.options) != 0:
                     # we have options set by the user
                     is_valid = param_val in param.options
                 else:
@@ -209,9 +185,7 @@ class ParameterSpace:
             elif param.type == "categorical":
                 is_valid = param_val in param.options
         if is_valid is False:
-            message = (
-                f"Not all parameters of {param_vector} are within bounds!"
-            )
+            message = f"Not all parameters of {param_vector} are within bounds!"
             Logger.log(message, "WARNING")
 
         return is_valid

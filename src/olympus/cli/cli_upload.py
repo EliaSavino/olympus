@@ -16,9 +16,7 @@ from olympus import Logger, __home__
 class ParserUpload:
     def __init__(self, subparsers):
 
-        self.parser = subparsers.add_parser(
-            "upload", help=">> help for upload"
-        )
+        self.parser = subparsers.add_parser("upload", help=">> help for upload")
         self.parser.add_argument("-n", "--name", required=True)
         self.parser.add_argument("-p", "--path", default="./")
         self.parser.add_argument(
@@ -64,18 +62,14 @@ class ParserUpload:
         try:
             import git_pull_request
         except ModuleNotFoundError:
-            Logger.log(
-                "Could not find a local version of git-pull-request", "ERROR"
-            )
+            Logger.log("Could not find a local version of git-pull-request", "ERROR")
             return
 
         # Inspired from the link below, we run a couple of git commands
         # https://medium.com/mergify/managing-your-github-pull-request-from-the-command-line-89cb6af0a7fa
         Logger.log("uploading dataset", "INFO")
 
-        with open(
-            f"{__home__}/cli/template_push_to_github.sh", "r"
-        ) as content:
+        with open(f"{__home__}/cli/template_push_to_github.sh", "r") as content:
             template = content.read()
 
         replace_dict = {
@@ -93,9 +87,7 @@ class ParserUpload:
 
         # get default git editor
         editor_file = ".editor"
-        subprocess.call(
-            f"git config --get core.editor > {editor_file}", shell=True
-        )
+        subprocess.call(f"git config --get core.editor > {editor_file}", shell=True)
         with open(editor_file, "r") as content:
             editor = content.read().strip()
         subprocess.call(

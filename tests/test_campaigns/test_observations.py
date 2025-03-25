@@ -20,9 +20,7 @@ def test_declaration():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -44,9 +42,7 @@ def test_add_observation():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -55,15 +51,13 @@ def test_add_observation():
 
     assert (
         np.linalg.norm(
-            np.array(obs.params)
-            - np.array([param.to_array() for param in params])
+            np.array(obs.params) - np.array([param.to_array() for param in params])
         )
         < 1e-7
     )
     assert (
         np.linalg.norm(
-            np.array(obs.values)
-            - np.array([value.to_array() for value in values])
+            np.array(obs.values) - np.array([value.to_array() for value in values])
         )
         < 1e-7
     )
@@ -77,9 +71,7 @@ def test_get_values():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -112,9 +104,7 @@ def test_observations_to_simpl():
 
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -164,14 +154,10 @@ def test_add_and_scalarize():
 
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(
-            ParameterVector().from_dict(
-                {"obj0": value_vect[0], "obj1": value_vect[1]}
-            )
+            ParameterVector().from_dict({"obj0": value_vect[0], "obj1": value_vect[1]})
         )
 
     scalarizer = Scalarizer(
@@ -211,14 +197,10 @@ def test_reset_history():
 
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(
-            ParameterVector().from_dict(
-                {"obj0": value_vect[0], "obj1": value_vect[1]}
-            )
+            ParameterVector().from_dict({"obj0": value_vect[0], "obj1": value_vect[1]})
         )
 
     scalarizer = Scalarizer(

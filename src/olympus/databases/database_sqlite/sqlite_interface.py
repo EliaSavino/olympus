@@ -56,9 +56,7 @@ class SqliteInterface:
             if attr["type"] in self.SQLITE_COLUMNS:
                 attr_type = attr["type"]
             self.table.append_column(
-                sql.Column(
-                    attr["name"].lower(), self.SQLITE_COLUMNS[attr_type]
-                )
+                sql.Column(attr["name"].lower(), self.SQLITE_COLUMNS[attr_type])
             )
         self.table.create(checkfirst=True)
 
@@ -107,9 +105,7 @@ class SqliteInterface:
 
             # 			keep_processing = len(self.TASKS_READ) > 0 or len(self.TASKS_UPDATE) > 0 or len(self.TASKS_WRITE) > 0
             keep_processing = (
-                num_tasks_read > 0
-                or num_tasks_update > 0
-                or num_tasks_write > 0
+                num_tasks_read > 0 or num_tasks_update > 0 or num_tasks_write > 0
             )
         self.is_processing = False
 
@@ -152,8 +148,7 @@ class SqliteInterface:
                 if len(cond_vals[index]) == 0:
                     return []
                 filters = [
-                    getattr(self.table.c, key) == value
-                    for value in cond_vals[index]
+                    getattr(self.table.c, key) == value for value in cond_vals[index]
                 ]
                 condition = sql.or_(*filters)
             else:
@@ -161,9 +156,7 @@ class SqliteInterface:
             selection = selection.where(condition)
 
         # create fetch request
-        fetch_entries = FetchEntries(
-            self.db, self.table, selection, name=self.name
-        )
+        fetch_entries = FetchEntries(self.db, self.table, selection, name=self.name)
         fetch_keys = generate_id()
         self.TASKS_READ[fetch_keys] = fetch_entries
         if not self.is_processing:
@@ -183,9 +176,7 @@ class SqliteInterface:
             .where(getattr(self.table.c, cond_keys[0]) == cond_vals[0])
         )
         for index, key in enumerate(cond_keys[1:]):
-            update = update.where(
-                getattr(self.table.c, key) == cond_vals[index + 1]
-            )
+            update = update.where(getattr(self.table.c, key) == cond_vals[index + 1])
 
         # submitting update
         update_entries = UpdateEntries(self.db, self.table, update)

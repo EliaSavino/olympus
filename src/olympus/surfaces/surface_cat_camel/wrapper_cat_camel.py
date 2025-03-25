@@ -8,7 +8,6 @@ from olympus.surfaces import AbstractSurface
 
 
 class CatCamel(AbstractSurface):
-
     """
     The Camel surface is generalized from the Camel function on continuous domains and features
     a degenerate and pseudo-disconnected global minimum
@@ -21,7 +20,7 @@ class CatCamel(AbstractSurface):
         For these surfaces, the same descriptors are used for each dimension
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(param_type="categorical", **locals())
 
     @property
@@ -46,14 +45,10 @@ class CatCamel(AbstractSurface):
         loc_5 = np.array([-0.5, -1.0])
         loc_6 = np.array([0.5, 1.0])
         loss_0 = (
-            np.sum(weight_0 * (vector - loc_0) ** 2)
-            + 0.01
-            + np.prod(vector - loc_0)
+            np.sum(weight_0 * (vector - loc_0) ** 2) + 0.01 + np.prod(vector - loc_0)
         )
         loss_1 = (
-            np.sum(weight_1 * (vector - loc_1) ** 2)
-            + 0.01
-            + np.prod(vector - loc_1)
+            np.sum(weight_1 * (vector - loc_1) ** 2) + 0.01 + np.prod(vector - loc_1)
         )
         loss_2 = np.sum((vector - loc_2) ** 2) + 0.075
         loss_3 = np.sum((vector - loc_3) ** 2) + 0.075

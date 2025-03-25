@@ -28,7 +28,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -87,7 +87,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -147,7 +147,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -209,7 +209,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -272,7 +272,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -288,12 +288,8 @@ class PlotterSeaborn(AbstractPlotter):
             all_data = {"planner": [], "vals": []}
             for planner_ix, planner in enumerate(planners):
                 # measurements[emulator][planner]['vals'] = np.squeeze(measurements[emulator][planner]['vals'])
-                all_data["planner"].extend(
-                    measurements[emulator][planner]["planner"]
-                )
-                all_data["vals"].extend(
-                    measurements[emulator][planner]["vals"]
-                )
+                all_data["planner"].extend(measurements[emulator][planner]["planner"])
+                all_data["vals"].extend(measurements[emulator][planner]["vals"])
             sns.boxplot(
                 x="planner",
                 y="vals",
@@ -320,9 +316,7 @@ class PlotterSeaborn(AbstractPlotter):
             if not is_percent:
                 ax.set_ylabel(f"# evaluations for top-{threshold}\ncandidate")
             else:
-                ax.set_ylabel(
-                    f"# evaluations for top-{threshold}\npercent candidates"
-                )
+                ax.set_ylabel(f"# evaluations for top-{threshold}\npercent candidates")
 
         plt.tight_layout()
 
@@ -342,7 +336,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
 
         self._set_color_palette()
         num_plots = len(emulators)
@@ -358,12 +352,8 @@ class PlotterSeaborn(AbstractPlotter):
             all_data = {"planner": [], "vals": []}
             for planner_ix, planner in enumerate(planners):
                 # measurements[emulator][planner]['vals'] = np.squeeze(measurements[emulator][planner]['vals'])
-                all_data["planner"].extend(
-                    measurements[emulator][planner]["planner"]
-                )
-                all_data["vals"].extend(
-                    measurements[emulator][planner]["vals"]
-                )
+                all_data["planner"].extend(measurements[emulator][planner]["planner"])
+                all_data["vals"].extend(measurements[emulator][planner]["vals"])
             sns.boxplot(
                 x="planner",
                 y="vals",
@@ -388,9 +378,7 @@ class PlotterSeaborn(AbstractPlotter):
 
             ax.set_xlabel("planner")
             if is_cumulative:
-                ax.set_ylabel(
-                    f"cumulative regret after\n{num_evals} iterations"
-                )
+                ax.set_ylabel(f"cumulative regret after\n{num_evals} iterations")
             else:
                 ax.set_ylabel(f"regret aft3er\n{num_evals} iterations")
 
@@ -401,7 +389,6 @@ class PlotterSeaborn(AbstractPlotter):
         if show is True:
             plt.show()
 
-
     def _plot_pareto_front(
         self,
         emulators,
@@ -411,7 +398,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
         self._set_color_palette()
         num_plots = 1
         num_graphs = len(planners)
@@ -423,7 +410,6 @@ class PlotterSeaborn(AbstractPlotter):
 
         run_ix = 7
 
-
         for plot_index, emulator in enumerate(emulators):
             ax = axs[plot_index]
             for planner_ix, planner in enumerate(planners):
@@ -432,11 +418,13 @@ class PlotterSeaborn(AbstractPlotter):
                 )
                 pareto_front = measurements[emulator][planner]["pareto_front"][run_ix]
                 pareto_front_sorted = sorted(
-                    [[pareto_front[i,0], pareto_front[i,1]] for i in range(len(pareto_front))], reverse=False,
+                    [
+                        [pareto_front[i, 0], pareto_front[i, 1]]
+                        for i in range(len(pareto_front))
+                    ],
+                    reverse=False,
                 )
                 pareto_front_sorted = np.array(pareto_front_sorted)
-
-
 
                 # scatter on all the measurements
                 ax.scatter(
@@ -444,15 +432,14 @@ class PlotterSeaborn(AbstractPlotter):
                     vals[run_ix, :, 1],
                     c=self.line_palette[planner_ix],
                     s=20,
-                    alpha=0.8
+                    alpha=0.8,
                 )
-
 
                 # scatter on pareto front
                 ax.scatter(
                     pareto_front_sorted[:, 0],
                     pareto_front_sorted[:, 1],
-                    c='k',
+                    c="k",
                     s=48,
                 )
 
@@ -471,19 +458,14 @@ class PlotterSeaborn(AbstractPlotter):
                     pareto_front_sorted[:, 1],
                     c=self.line_palette[planner_ix],
                     lw=2,
-                    ls='-'
+                    ls="-",
                 )
-
-
-
-
-
 
             ax.grid(linestyle=":")
             ax.set_title(f"{emulator.capitalize()}")
 
-            ax.set_xlabel('objective 0')
-            ax.set_ylabel('objective 1')
+            ax.set_xlabel("objective 0")
+            ax.set_ylabel("objective 1")
 
         plt.legend(fontsize=12)
         plt.tight_layout()
@@ -492,11 +474,6 @@ class PlotterSeaborn(AbstractPlotter):
             plt.savefig(file_name, bbox_inches="tight")
         if show is True:
             plt.show()
-
-
-
-
-
 
     def _plot_hypervolume(
         self,
@@ -507,7 +484,7 @@ class PlotterSeaborn(AbstractPlotter):
         show=False,
         *args,
         **kwargs,
-        ):
+    ):
         self._set_color_palette()
         num_plots = len(emulators)
         num_graphs = len(planners)
@@ -522,12 +499,8 @@ class PlotterSeaborn(AbstractPlotter):
             all_data = {"planner": [], "vals": []}
             for planner_ix, planner in enumerate(planners):
                 # measurements[emulator][planner]['vals'] = np.squeeze(measurements[emulator][planner]['vals'])
-                all_data["planner"].extend(
-                    measurements[emulator][planner]["planner"]
-                )
-                all_data["vals"].extend(
-                    measurements[emulator][planner]["vals"]
-                )
+                all_data["planner"].extend(measurements[emulator][planner]["planner"])
+                all_data["vals"].extend(measurements[emulator][planner]["vals"])
             sns.boxplot(
                 x="planner",
                 y="vals",

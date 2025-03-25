@@ -9,7 +9,6 @@ from olympus.scalarizers import AbstractScalarizer
 
 
 class Chimera(AbstractScalarizer):
-
     """The Chimera achievement scalarizing function.
     Chem. Sci., 2018, 9, 7642
     """
@@ -37,13 +36,13 @@ class Chimera(AbstractScalarizer):
 
     def validate_asf_params(self):
 
-        if not (
-            len(self.tolerances) == len(self.absolutes) == len(self.goals)
-        ):
+        if not (len(self.tolerances) == len(self.absolutes) == len(self.goals)):
             message = "Lengths of Chimera parameters do not match"
             Logger.log(message, "FATAL")
         if not len(self.tolerances) == len(self.value_space):
-            message = "Number of Chimera parameters does not match the number of objectives"
+            message = (
+                "Number of Chimera parameters does not match the number of objectives"
+            )
             Logger.log(message, "FATAL")
 
     @staticmethod

@@ -8,7 +8,6 @@ from . import AbstractScalarizer, get_scalarizers_list, import_scalarizer
 
 
 def Scalarizer(kind="Chimera", value_space=None, **kwargs):
-
     """Convenience function to access the scalarizers via a slightly higher level interface.
     Returns a certain surface with defaults arguments by keyword.
 

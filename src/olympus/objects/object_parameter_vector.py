@@ -66,9 +66,7 @@ class ObjectParameterVector(Object):
         if array.shape[0] > 1:
             Logger.log(f"undefined operation: {self} < {value}", "ERROR")
             raise SystemExit
-        return ObjectParameterVector().from_array(
-            array - vector, self.param_space
-        )
+        return ObjectParameterVector().from_array(array - vector, self.param_space)
 
     # ***************************************************************************
 
@@ -80,10 +78,7 @@ class ObjectParameterVector(Object):
 
     def to_array(self):
         array = np.array(
-            [
-                getattr(self, param_name)
-                for param_name in self.param_space.param_names
-            ]
+            [getattr(self, param_name) for param_name in self.param_space.param_names]
         )
         return array
 
@@ -95,8 +90,7 @@ class ObjectParameterVector(Object):
 
     def to_list(self):
         list_ = [
-            getattr(self, param_name)
-            for param_name in self.param_space.param_names
+            getattr(self, param_name) for param_name in self.param_space.param_names
         ]
         return list_
 
@@ -128,6 +122,3 @@ class ObjectParameterVector(Object):
                 # add specific value for the parameter
                 self.add(param_name, info_dict[param_name])
         return self
-
-
-

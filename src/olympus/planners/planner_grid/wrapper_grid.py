@@ -64,9 +64,7 @@ class Grid(AbstractPlanner):
         # allow providing a list of levels to tune the budget
         if isinstance(self.levels, int):
             self._levels = [self.levels] * self.dims
-        elif isinstance(self.levels, list) or isinstance(
-            self.levels, np.ndarray
-        ):
+        elif isinstance(self.levels, list) or isinstance(self.levels, np.ndarray):
             if len(self.levels) != self.dims:
                 message = (
                     f"The number of levels provided ({len(self.levels)}) does not match dimensionality of the "
@@ -75,9 +73,7 @@ class Grid(AbstractPlanner):
                 Logger.log(message, "ERROR")
             self._levels = list(self.levels)
         else:
-            raise ValueError(
-                "Argument `level` can only be a integer or a list."
-            )
+            raise ValueError("Argument `level` can only be a integer or a list.")
 
     def _tell(self, observations):
         # grid search does not care about previous observations
@@ -91,9 +87,7 @@ class Grid(AbstractPlanner):
             if param.type == "continuous":
                 loc = np.linspace(start=param.low, stop=param.high, num=level)
             elif param.type == "discrete":
-                num_options = int(
-                    ((param.high - param.low) / param.stride) + 1
-                )
+                num_options = int(((param.high - param.low) / param.stride) + 1)
                 options = np.linspace(param.low, param.high, num_options)
                 tiled_options = np.tile(options, (level // num_options) + 1)
                 if self.shuffle:
@@ -110,9 +104,7 @@ class Grid(AbstractPlanner):
         meshgrid = np.stack(
             np.meshgrid(*self.samples_loc), len(self.samples_loc)
         )  # make grid
-        num_samples = np.prod(
-            np.shape(meshgrid)[:-1]
-        )  # number of samples in grid
+        num_samples = np.prod(np.shape(meshgrid)[:-1])  # number of samples in grid
 
         # all grid samples in a 2D array
         self.samples = np.reshape(
@@ -129,16 +121,12 @@ class Grid(AbstractPlanner):
         # initialise with lowest number of samples that does not exceed budget
         base_level = int(np.floor(self.budget ** (1.0 / self.dims)))
         self.levels = np.array([base_level] * self.dims)
-        effective_budget = np.prod(
-            self.levels
-        )  # actual number of samples created
+        effective_budget = np.prod(self.levels)  # actual number of samples created
         excess = int(self.budget - effective_budget)  # excess budget left
 
         # now add one level at a time to each dimension
         counter = 0
-        while (
-            excess > 0
-        ):  # add levels until we exhaust all excess budget samples
+        while excess > 0:  # add levels until we exhaust all excess budget samples
             # if we want to have samples <= budget (i.e. do not exceed budget)
             if self.exceed_budget is False:
                 # add 1 to last level as this should never get to receive a +1 anyway
@@ -179,7 +167,6 @@ class Grid(AbstractPlanner):
                 olymp_param[self.param_space[param_ix].name] = float(suggestion)
             else:
                 olymp_param[self.param_space[param_ix].name] = suggestion
-
 
         if len(self.samples) == 0:
             message = "Last parameter being provided - there will not be any more available samples in the grid."

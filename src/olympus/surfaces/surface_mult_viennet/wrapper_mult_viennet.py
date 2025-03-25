@@ -14,7 +14,7 @@ class MultViennet(AbstractSurface):
         """
         param_dim = 2
         value_dim = 3
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -30,8 +30,8 @@ class MultViennet(AbstractSurface):
 
     def _run(self, params):
         params = np.array(params)
-        params = (params * (3+3)) - 3
-        obj_0 = 0.5 * (params[0]** 2 + params[1]** 2) + np.sin(
+        params = (params * (3 + 3)) - 3
+        obj_0 = 0.5 * (params[0] ** 2 + params[1] ** 2) + np.sin(
             params[0] ** 2 + params[1] ** 2
         )
         obj_1 = (

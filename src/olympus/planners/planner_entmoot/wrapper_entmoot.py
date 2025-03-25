@@ -15,7 +15,6 @@ class Entmoot(AbstractPlanner):
         goal="minimize",
         random_seed=None,
     ):
-
         """
         ENTMOOT (ENsemble Tree MOdel Optimization Tool) is a novel framework
         to handle tree-based models in Bayesian optimization applications.

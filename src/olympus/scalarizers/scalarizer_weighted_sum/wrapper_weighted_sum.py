@@ -21,8 +21,11 @@ class WeightedSum(AbstractScalarizer):
 
     def scalarize(self, objectives):
 
-        signs = [1 if self.goals[idx]=='min' else -1 for idx in range(len(self.value_space))]
-        objectives = objectives*signs
+        signs = [
+            1 if self.goals[idx] == "min" else -1
+            for idx in range(len(self.value_space))
+        ]
+        objectives = objectives * signs
 
         norm_objectives = self.normalize(objectives)
         merit = np.sum(norm_objectives * self.norm_weights, axis=1)
@@ -49,14 +52,10 @@ class WeightedSum(AbstractScalarizer):
 
     def validate_asf_params(self):
         if not np.all(np.array(self.weights) >= 0.0):
-            message = (
-                "Weighted sum ASF weights must be non-negative real numbers"
-            )
+            message = "Weighted sum ASF weights must be non-negative real numbers"
             Logger.log(message, "FATAL")
         if not len(self.weights) == len(self.value_space):
-            message = (
-                "Number of weights does not match the number of objectives"
-            )
+            message = "Number of weights does not match the number of objectives"
             Logger.log(message, "FATAL")
 
     @staticmethod
@@ -68,5 +67,7 @@ class WeightedSum(AbstractScalarizer):
         provided_args = list(kwargs.keys())
         missing_args = list(set(req_args).difference(provided_args))
         if not missing_args == []:
-            message = f'Missing required WeightedSum arguments {", ".join(missing_args)}'
+            message = (
+                f'Missing required WeightedSum arguments {", ".join(missing_args)}'
+            )
             Logger.log(message, "FATAL")

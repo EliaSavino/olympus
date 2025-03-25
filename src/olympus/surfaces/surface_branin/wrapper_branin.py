@@ -17,15 +17,13 @@ class Branin(AbstractSurface):
         """
         param_dim = 2
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
     def minima(self):
         # 3 global minima
-        x0 = (
-            np.array([-np.pi, np.pi, 9.42478]) + 5
-        ) / 15  # rescale onto unit square
+        x0 = (np.array([-np.pi, np.pi, 9.42478]) + 5) / 15  # rescale onto unit square
         x1 = np.array([12.275, 2.275, 2.475]) / 15  # rescale onto unit square
         params0 = np.array([x0[0], x1[0]])
         params1 = np.array([x0[1], x1[1]])
@@ -64,11 +62,7 @@ class Branin(AbstractSurface):
         s = 10
         t = 1 / (8 * np.pi)
 
-        result = (
-            a * (x1 - b * (x0**2) + c * x0 - r) ** 2
-            + s * (1 - t) * np.cos(x0)
-            + s
-        )
+        result = a * (x1 - b * (x0**2) + c * x0 - r) ** 2 + s * (1 - t) * np.cos(x0) + s
 
         if self.noise is None:
             return result

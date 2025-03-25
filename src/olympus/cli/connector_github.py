@@ -24,9 +24,7 @@ class ConnectorGithub:
                 if not dataset_name in remote_datasets:
                     remote_datasets.append(dataset_name)
         os.remove(tmp_file)
-        remote_datasets = [
-            remote_dataset[8:] for remote_dataset in remote_datasets
-        ]
+        remote_datasets = [remote_dataset[8:] for remote_dataset in remote_datasets]
         return sorted(remote_datasets)
 
     def get_dataset(self, dataset_name):

@@ -162,7 +162,7 @@ class WrapperTensorflowModel(AbstractModel):
                             features=valid_features[valid_indices],
                             num_samples=10,
                         )
-                        if self.task == 'regression':
+                        if self.task == "regression":
                             valid_r2 = r2_score(
                                 valid_targets[valid_indices], valid_pred
                             )
@@ -172,12 +172,18 @@ class WrapperTensorflowModel(AbstractModel):
                                 )
                             )
                             valid_errors.append([valid_r2, valid_rmsd])
-                        elif self.task == 'ordinal':
+                        elif self.task == "ordinal":
                             # accuracy
-                            valid_true_labels = (valid_targets[valid_indices]>0.5).cumprod(axis=1).sum(axis=1)-1.
-                            valid_pred_labels = (valid_pred>0.5).cumprod(axis=1).sum(axis=1)-1.
+                            valid_true_labels = (
+                                valid_targets[valid_indices] > 0.5
+                            ).cumprod(axis=1).sum(axis=1) - 1.0
+                            valid_pred_labels = (valid_pred > 0.5).cumprod(axis=1).sum(
+                                axis=1
+                            ) - 1.0
 
-                            valid_acc = accuracy_score(valid_true_labels, valid_pred_labels)
+                            valid_acc = accuracy_score(
+                                valid_true_labels, valid_pred_labels
+                            )
 
                             valid_rmsd = np.sqrt(
                                 mean_squared_error(
@@ -186,13 +192,12 @@ class WrapperTensorflowModel(AbstractModel):
                             )
                             valid_errors.append([valid_acc, valid_rmsd])
 
-
                         # make a prediction on the train set
                         train_pred, _, __ = self.predict(
                             features=train_features[train_indices],
                             num_samples=10,
                         )
-                        if self.task == 'regression':
+                        if self.task == "regression":
                             train_r2 = r2_score(
                                 train_targets[train_indices], train_pred
                             )
@@ -203,12 +208,18 @@ class WrapperTensorflowModel(AbstractModel):
                             )
                             train_errors.append([train_r2, train_rmsd])
 
-                        elif self.task == 'ordinal':
+                        elif self.task == "ordinal":
                             # accuracy
-                            train_true_labels = (train_targets[train_indices]>0.5).cumprod(axis=1).sum(axis=1)-1.
-                            train_pred_labels = (train_pred>0.5).cumprod(axis=1).sum(axis=1)-1.
+                            train_true_labels = (
+                                train_targets[train_indices] > 0.5
+                            ).cumprod(axis=1).sum(axis=1) - 1.0
+                            train_pred_labels = (train_pred > 0.5).cumprod(axis=1).sum(
+                                axis=1
+                            ) - 1.0
 
-                            train_acc = accuracy_score(train_true_labels, train_pred_labels)
+                            train_acc = accuracy_score(
+                                train_true_labels, train_pred_labels
+                            )
 
                             train_rmsd = np.sqrt(
                                 mean_squared_error(
@@ -251,25 +262,17 @@ class WrapperTensorflowModel(AbstractModel):
                             ax1.plot(np.array(valid_errors)[:, 0])
                             plt.pause(0.05)
 
-
-                        min_rmsd_index = np.argmin(
-                            np.array(valid_errors)[:, 1]
-                        )
-                        if (
-                            len(valid_errors) - min_rmsd_index
-                            > self.es_patience
-                        ):
+                        min_rmsd_index = np.argmin(np.array(valid_errors)[:, 1])
+                        if len(valid_errors) - min_rmsd_index > self.es_patience:
                             break
 
-                        if self.task == 'regression':
+                        if self.task == "regression":
                             newline = f"{epoch:>15}{train_r2:>15.3f}{train_rmsd:>15.3f}{valid_r2:>15.3f}{valid_rmsd:>15.3f}"
-                        elif self.task == 'ordinal':
+                        elif self.task == "ordinal":
                             newline = f"{epoch:>15}{train_acc:>15.3f}{train_rmsd:>15.3f}{valid_acc:>15.3f}{valid_rmsd:>15.3f}"
                         # the latest model is the best ==> save it and tag it on screen
                         if min_rmsd_index == len(valid_errors) - 1:
-                            self.saver.save(
-                                self.sess, f"{model_path}/model.ckpt"
-                            )
+                            self.saver.save(self.sess, f"{model_path}/model.ckpt")
                             newline += " *"
                         Logger.log(newline, "INFO")
 
@@ -285,7 +288,12 @@ class WrapperTensorflowModel(AbstractModel):
             "INFO",
         )
         Logger.log("=" * 75 + "\n", "INFO")
-        return mdl_train_metric1, mdl_valid_metric1, mdl_train_metric2, mdl_valid_metric2
+        return (
+            mdl_train_metric1,
+            mdl_valid_metric1,
+            mdl_train_metric2,
+            mdl_valid_metric2,
+        )
 
     def restore(self, model_path):
         if not self.is_graph_constructed:
@@ -350,7 +358,11 @@ class WrapperTensorflowModel(AbstractModel):
             sigma_ep = np.std(pred, axis=0)
             sigma_al = np.mean(scale, axis=0)
 
-            return mu, sigma_ep, sigma_al  # return the scaled prediction (Emulator will back-transform)
+            return (
+                mu,
+                sigma_ep,
+                sigma_al,
+            )  # return the scaled prediction (Emulator will back-transform)
 
 
 def _print_header(task):
@@ -358,20 +370,20 @@ def _print_header(task):
         "    =======================================================================",
         "INFO",
     )
-    if task == 'regression':
+    if task == "regression":
         Logger.log(
             "{0:>15}{1:>15}{2:>15}{3:>15}{4:>15}".format(
                 "Epoch", "Train R2", "Train RMSD", "Test R2", "Test RMSD"
             ),
             "INFO",
         )
-    elif task == 'ordinal':
+    elif task == "ordinal":
         Logger.log(
             "{0:>15}{1:>15}{2:>15}{3:>15}{4:>15}".format(
                 "Epoch", "Train ACC", "Train RMSD", "Test ACC", "Test RMSD"
             ),
             "INFO",
-    )
+        )
     Logger.log(
         "    =======================================================================",
         "INFO",

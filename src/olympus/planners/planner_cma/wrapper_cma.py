@@ -81,9 +81,7 @@ class Cma(AbstractPlanner):
                 list(np.full((len(self.param_space)), 1)),
             ]
         }
-        optimizer = CMAEvolutionStrategy(
-            self.init_guess, self.stddev, inopts=opts
-        )
+        optimizer = CMAEvolutionStrategy(self.init_guess, self.stddev, inopts=opts)
         _ = optimizer.optimize(self._priv_evaluator)
         self.is_converged = True
 

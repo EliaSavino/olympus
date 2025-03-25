@@ -8,7 +8,6 @@ from olympus.surfaces import AbstractSurface
 
 
 class CatAckley(AbstractSurface):
-
     """The Ackley surface is inspired by the Ackley path function for
     continuous spaces. It features a narrow funnel around the global minimum,
     which is degenerate if the number of options along one (or more)dimensions
@@ -22,7 +21,7 @@ class CatAckley(AbstractSurface):
         For these surfaces, the same descriptors are used for each dimension
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(param_type="categorical", **locals())
 
     @property
@@ -54,9 +53,7 @@ class CatAckley(AbstractSurface):
             elif isinstance(element, int):
                 pass
             # TODO: add else statement here and return error
-            vector[index] = (
-                65.536 * (element / float(self.num_opts - 1)) - 32.768
-            )
+            vector[index] = 65.536 * (element / float(self.num_opts - 1)) - 32.768
         return self.ackley(vector)
 
     def get_best(self, goal="minimize"):

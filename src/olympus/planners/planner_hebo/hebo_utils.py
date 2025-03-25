@@ -22,9 +22,7 @@ def propose_randomly(num_proposals, param_space):
                 sample.append(p)
                 raw_sample.append(p)
             elif param.type == "discrete":
-                num_options = int(
-                    ((param.high - param.low) / param.stride) + 1
-                )
+                num_options = int(((param.high - param.low) / param.stride) + 1)
                 options = np.linspace(param.low, param.high, num_options)
                 p = np.random.choice(options, size=None, replace=False)
                 sample.append(p)

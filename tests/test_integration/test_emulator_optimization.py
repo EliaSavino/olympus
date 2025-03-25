@@ -126,6 +126,6 @@ def test_bnn_emulators_optimization(planner, dataset):
 #     campaign = planner.optimize(emulator=emulator, num_iter=3)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     pass

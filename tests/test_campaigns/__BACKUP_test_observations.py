@@ -13,9 +13,7 @@ def test_declaration():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -38,9 +36,7 @@ def test_add_obseration():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 
@@ -58,9 +54,7 @@ def test_get_values():
     values = []
     for param_vect, value_vect in zip(param_vects, values_vects):
         params.append(
-            ParameterVector().from_dict(
-                {"p0": param_vect[0], "p1": param_vect[1]}
-            )
+            ParameterVector().from_dict({"p0": param_vect[0], "p1": param_vect[1]})
         )
         values.append(ParameterVector().from_dict({"obj0": value_vect[0]}))
 

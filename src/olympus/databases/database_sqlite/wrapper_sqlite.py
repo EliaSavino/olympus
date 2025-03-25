@@ -15,7 +15,6 @@ from olympus.databases.database_sqlite import SqliteInterface
 
 
 class Wrapper_sqlite(AbstractDatabase):
-
     """implements a simple sqlite database
 
     Architecture of the database:
@@ -35,9 +34,7 @@ class Wrapper_sqlite(AbstractDatabase):
 
     def __getattr__(self, prop):
         if prop == "db":
-            self.db = SqliteInterface(
-                self.name, self.file_name, self.db_attrs()
-            )
+            self.db = SqliteInterface(self.name, self.file_name, self.db_attrs())
             return self.db
         else:
             return AbstractDatabase.__getattr__(self, prop)

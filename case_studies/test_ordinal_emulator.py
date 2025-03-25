@@ -19,19 +19,19 @@ from olympus.objects import (
     ParameterContinuous,
     ParameterDiscrete,
     ParameterOrdinal,
-    ParameterCategorical
+    ParameterCategorical,
 )
 
-dataset = Dataset(kind='mock_ordinal_emulator')
-#dataset = Dataset(kind='suzuki')
+dataset = Dataset(kind="mock_ordinal_emulator")
+# dataset = Dataset(kind='suzuki')
 print(dataset.param_space)
 print(dataset.value_space)
 print(dataset.task)
 
 
-#--------------------
+# --------------------
 # BUILD NEW EMULATOR
-#--------------------
+# --------------------
 
 # params = {
 #     'task': 'ordinal',
@@ -70,15 +70,14 @@ print(dataset.task)
 # print(pred)
 
 
-#-------------------------
+# -------------------------
 # LOAD EMULATOR FROM DISK
-#-------------------------
+# -------------------------
 
 
-
-#----------------------
+# ----------------------
 # TEST RANDOM SAMPLING
-#----------------------
+# ----------------------
 
 # emulator = Emulator(dataset='mock_ordinal_emulator', model='BayesNeuralNet')
 # #emulator = Emulator(dataset='suzuki', model='BayesNeuralNet')
@@ -142,7 +141,6 @@ print(dataset.task)
 # print('\n\nvalues')
 # print(campaign.observations.get_values())
 #
-
 
 
 # ------------------------
@@ -214,16 +212,15 @@ print(dataset.task)
 # print(campaign.observations.get_values())
 
 
-
-#-------------------------------------
+# -------------------------------------
 # TEST HIGH-LEVEL EVALUATOR INTERFACE
-#-------------------------------------
+# -------------------------------------
 
 
-emulator = Emulator(dataset='mock_ordinal_emulator', model='BayesNeuralNet')
+emulator = Emulator(dataset="mock_ordinal_emulator", model="BayesNeuralNet")
 print(emulator)
 
-planner = Planner(kind='Botorch', goal='minimize')
+planner = Planner(kind="Botorch", goal="minimize")
 planner.set_param_space(dataset.param_space)
 
 campaign = Campaign()
@@ -236,8 +233,8 @@ BUDGET = 10
 
 evaluator.optimize(num_iter=BUDGET)
 
-print('\n\nparams')
+print("\n\nparams")
 print(campaign.observations.get_params())
 
-print('\n\nvalues')
+print("\n\nvalues")
 print(campaign.observations.get_values())

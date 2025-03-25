@@ -68,10 +68,7 @@ def test_train_sqrt_mean_array():
     data_transformer = DataTransformer(transformations="sqrt_mean")
     data_transformer.train(data)
     transformed = data_transformer.transform(data)
-    assert (
-        np.sum(np.abs(data - data_transformer.back_transform(transformed)))
-        < 1e-7
-    )
+    assert np.sum(np.abs(data - data_transformer.back_transform(transformed))) < 1e-7
 
 
 # def test_train_periodic_array():

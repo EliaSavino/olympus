@@ -16,7 +16,7 @@ class MultFonseca(AbstractSurface):
         """
         param_dim = 2
         value_dim = 2
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -32,7 +32,7 @@ class MultFonseca(AbstractSurface):
 
     def _run(self, params):
         params = np.array(params)
-        params = (params * (4+4)) - 4
+        params = (params * (4 + 4)) - 4
         obj_0 = 1 - np.exp(-np.sum((params - 1.0 / np.sqrt(len(params))) ** 2))
         obj_1 = 1 - np.exp(-np.sum((params + 1.0 / np.sqrt(len(params))) ** 2))
 

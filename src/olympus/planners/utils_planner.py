@@ -8,9 +8,7 @@ def _get_init_guess_random(param_space, random_seed=None):
     init_guess = []
     for param in param_space:
         if param.type == "continuous":
-            init_guess.append(
-                np.random.uniform(low=param.low, high=param.high)
-            )
+            init_guess.append(np.random.uniform(low=param.low, high=param.high))
     return np.array(init_guess)
 
 

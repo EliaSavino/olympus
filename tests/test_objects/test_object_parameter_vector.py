@@ -26,9 +26,7 @@ def test_from_functions():
     param_space.add([param_0, param_1, param_2, param_3])
 
     # from array
-    paramvector0 = ParameterVector().from_array(
-        [0.1, 0.2, "x0", 0.7], param_space
-    )
+    paramvector0 = ParameterVector().from_array([0.1, 0.2, "x0", 0.7], param_space)
     # from dictionary
     paramvector1 = ParameterVector().from_dict(
         {
@@ -50,7 +48,4 @@ def test_to_string():
     param_vector = ParameterVector().from_dict(
         {"p0": 0.1, "p1": 0.2, "p2": "x0", "p3": 0.7}
     )
-    assert (
-        str(param_vector)
-        == "ParamVector(p0 = 0.1, p1 = 0.2, p2 = x0, p3 = 0.7)"
-    )
+    assert str(param_vector) == "ParamVector(p0 = 0.1, p1 = 0.2, p2 = x0, p3 = 0.7)"

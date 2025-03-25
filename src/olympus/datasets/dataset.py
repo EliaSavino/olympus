@@ -22,6 +22,7 @@ from olympus.objects import (
 # To silence VisibleDeprecationWarning we use 'ignore'. We can use 'error' to get a traceback and resolve the issue.
 # np.warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
 
+
 # =========================
 # Main Class of This Module
 # =========================
@@ -81,13 +82,11 @@ class Dataset:
         # Case 2: Olympus dataset loaded
         # ------------------------------
         elif kind is not None:
-            _data, _config, self._description, _descriptors, self.known_constraints = load_dataset(
-                kind
+            _data, _config, self._description, _descriptors, self.known_constraints = (
+                load_dataset(kind)
             )
             self._targets = [t["name"] for t in _config["measurements"]]
-            columns = [
-                f["name"] for f in _config["parameters"]
-            ] + self._targets
+            columns = [f["name"] for f in _config["parameters"]] + self._targets
             # descriptors are stored in the descriptors attribute
             desc_columns = ["param", "option", "name", "value"]
             self.descriptors = DataFrame(
@@ -113,9 +112,16 @@ class Dataset:
                 datasets_path = os.path.dirname(os.path.abspath(__file__))
                 csv_file = "".join(f"{datasets_path}/dataset_{kind}/scales.csv")
                 try:
-                    self.scales = read_csv(csv_file, header=None, names=[f'scales_{i}' for i in range(len(self.value_space))]) #.to_numpy()
+                    self.scales = read_csv(
+                        csv_file,
+                        header=None,
+                        names=[f"scales_{i}" for i in range(len(self.value_space))],
+                    )  # .to_numpy()
                 except FileNotFoundError:
-                    Logger.log(f"Could not find scales.csv for dataset {kind}, resorting to noiseless measurements", "WARNING")
+                    Logger.log(
+                        f"Could not find scales.csv for dataset {kind}, resorting to noiseless measurements",
+                        "WARNING",
+                    )
 
             elif np.all(
                 [param["type"] in ["continuous"] for param in self.param_space]
@@ -125,24 +131,21 @@ class Dataset:
                 self.dataset_type = "mixed"
 
             # param_type attribute stores unique parameter types for the dataset
-            self.param_types = list(
-                set([param["type"] for param in self.param_space])
-            )
+            self.param_types = list(set([param["type"] for param in self.param_space]))
 
             # check the type of predictive task associated with the dataset
-            if np.all([v.type=='continuous' for v in self.value_space]):
+            if np.all([v.type == "continuous" for v in self.value_space]):
                 # if continuous-valued targets, do regression
-                self.task = 'regression'
-                self.metric_names = ['r2', 'rmsd']
-            elif np.all([v.type=='ordinal' for v in self.value_space]):
+                self.task = "regression"
+                self.metric_names = ["r2", "rmsd"]
+            elif np.all([v.type == "ordinal" for v in self.value_space]):
                 # if ordinal-valued targets, do ordinal regression like https://arxiv.org/pdf/0704.1028.pdf
-                self.task = 'ordinal'
-                self.metric_names = ['acc', 'rmsd']
+                self.task = "ordinal"
+                self.metric_names = ["acc", "rmsd"]
             else:
                 # if mixed-valued targets, complain --> we dont support this yet
-                message = 'We currently do not support emulation of mixed continuous-ordinal objective spaces'
-                Logger.log(messgae, 'FATAL')
-
+                message = "We currently do not support emulation of mixed continuous-ordinal objective spaces"
+                Logger.log(messgae, "FATAL")
 
             # define attributes of interest - done here so to avoid calling load_dataset again
             self.constraints = _config["constraints"]
@@ -168,8 +171,6 @@ class Dataset:
 
         # create dataset splits
         self.create_train_validate_test_splits()
-
-
 
     @property
     def goal(self):
@@ -326,15 +327,12 @@ class Dataset:
         )
         _description.append(f"    Features:")
         for param in self.param_space.parameters:
-            _description.append(
-                f"        {param.name:<10}          {param.kind:>10}"
-            )
+            _description.append(f"        {param.name:<10}          {param.kind:>10}")
         _description.append(f"    Targets:")
         for target in self._targets:
             _description.append(f"        {target:<10}          continuous")
 
         self._description = "\n".join(_description)
-
 
     def run(self, params, return_paramvector=False, noiseless=False):
         """run method to allow lookup of target values for fully categorical
@@ -387,18 +385,14 @@ class Dataset:
             )
 
         # assert that have the correct number of parameters for each sample
-        assert np.all(
-            [len(param) == len(self.feature_names) for param in params]
-        )
+        assert np.all([len(param) == len(self.feature_names) for param in params])
 
         values = []
         for param in params:
             # join scales and dataset
             sub_df = pd.concat((self.data, self.scales), axis=1)
 
-            for name, space, val in zip(
-                self.feature_names, self.param_space, param
-            ):
+            for name, space, val in zip(self.feature_names, self.param_space, param):
                 if space.type in ["continuous", "discrete"]:
                     val = round(
                         val, 5
@@ -413,7 +407,7 @@ class Dataset:
             for target_ix, target_name in enumerate(self.target_names):
                 mu = sub_df[target_name].tolist()[0]
 
-                scale = sub_df[f'scales_{target_ix}'].tolist()[0]
+                scale = sub_df[f"scales_{target_ix}"].tolist()[0]
                 if not noiseless:
                     # sample measurement from distribution
                     _noise = GaussianNoise(scale=scale)
@@ -431,9 +425,7 @@ class Dataset:
                 value_objs = ParameterVector().from_dict(
                     {
                         target_name: val
-                        for target_name, val in zip(
-                            self.target_names, value_objs
-                        )
+                        for target_name, val in zip(self.target_names, value_objs)
                     }
                 )
             values.append(value_objs)
@@ -477,7 +469,7 @@ class Dataset:
             if param.type in ["continuous", "discrete"]:
                 dim += 1
             elif param.type == "categorical":
-                if np.all([d==None for d in param.descriptors]):
+                if np.all([d == None for d in param.descriptors]):
                     dim += len(param.options)
                 else:
                     # should have same num descriptors for each option
@@ -626,13 +618,9 @@ class Dataset:
             # we have some descritptors
             desc = []
             assert not type(self.descriptors) == type(None)
-            param_desc = self.descriptors[
-                self.descriptors["param"] == param["name"]
-            ]
+            param_desc = self.descriptors[self.descriptors["param"] == param["name"]]
             for option in param["options"]:
-                d = param_desc[param_desc["option"] == option][
-                    "value"
-                ].tolist()
+                d = param_desc[param_desc["option"] == option]["value"].tolist()
                 desc.append(d)
         return desc
 
@@ -663,9 +651,7 @@ class Dataset:
         self.value_space = ParameterSpace()
         for feature in config["measurements"]:
             kind = feature["type"]
-            self.value_space.add(
-                    Parameter(kind=kind).from_dict(feature)
-            )
+            self.value_space.add(Parameter(kind=kind).from_dict(feature))
 
 
 # ===============
@@ -685,21 +671,15 @@ def load_dataset(kind):
             description (str): string describing the dataset.
     """
 
-    _validate_dataset_args(
-        kind=kind, data=None, columns=None, target_names=None
-    )
+    _validate_dataset_args(kind=kind, data=None, columns=None, target_names=None)
     datasets_path = os.path.dirname(os.path.abspath(__file__))
 
     # load description
-    with open(
-        "".join(f"{datasets_path}/dataset_{kind}/description.txt")
-    ) as txtfile:
+    with open("".join(f"{datasets_path}/dataset_{kind}/description.txt")) as txtfile:
         description = txtfile.read()
 
     # load info on features/targets
-    with open(
-        "".join(f"{datasets_path}/dataset_{kind}/config.json"), "r"
-    ) as content:
+    with open("".join(f"{datasets_path}/dataset_{kind}/config.json"), "r") as content:
         config = json.loads(content.read())
 
     # load data
@@ -722,18 +702,18 @@ def load_dataset(kind):
         descriptors = None
 
     # load constraints
-    if config['constraints']['known'] == 'yes':
+    if config["constraints"]["known"] == "yes":
         # we should have some known constraints defined in a file called constraints.py
-        sys.path.insert(0, f'{__home__}/datasets/dataset_{kind}/')
+        sys.path.insert(0, f"{__home__}/datasets/dataset_{kind}/")
         try:
-            constraints_module = __import__('constraints')
-            if not 'known_constraints' in dir(constraints_module):
+            constraints_module = __import__("constraints")
+            if not "known_constraints" in dir(constraints_module):
                 msg = f'Known constraints module must include function "known_constraints"'
-                Logger.log(msg, 'FATAL')
+                Logger.log(msg, "FATAL")
             else:
                 known_constraints = constraints_module.known_constraints
         except ModuleNotFoundError:
-            Logger.log(f'No constraints module found for dataset {kind}', 'FATAL')
+            Logger.log(f"No constraints module found for dataset {kind}", "FATAL")
     else:
         known_constraints = None
 
@@ -759,9 +739,7 @@ def _validate_dataset_args(kind, data, columns, target_names):
         if kind not in olympus_datasets:
             message = (
                 "Could not find dataset `{0}`. Please choose from one of the available "
-                "datasets: {1}.".format(
-                    kind, ", ".join(list(olympus_datasets))
-                )
+                "datasets: {1}.".format(kind, ", ".join(list(olympus_datasets)))
             )
             Logger.log(message, "FATAL")
         # --------------------------------------------------------------

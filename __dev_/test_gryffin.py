@@ -14,26 +14,26 @@ from olympus.planners import Planner
 from olympus.scalarizers import Scalarizer
 
 
-cs1_datasets = ['redoxmers']
+cs1_datasets = ["redoxmers"]
 cs1_planners = [
-    #'RandomSearch', 
+    #'RandomSearch',
     #'Genetic',
-    #'Hyperopt', 
-    #'Gpyopt', 
-    'Gryffin', 
-    #'Dragonfly', 
+    #'Hyperopt',
+    #'Gpyopt',
+    "Gryffin",
+    #'Dragonfly',
     #'Botorch',
     #'Smac',
     #'Hebo',
-]  
+]
 
 
 for dataset_name in cs1_datasets:
     for planner_name in cs1_planners:
-        
-        print(f'\nTESTING {planner_name} ON {dataset_name} ...\n')
-            
-        if dataset_name == 'dye_lasers':
+
+        print(f"\nTESTING {planner_name} ON {dataset_name} ...\n")
+
+        if dataset_name == "dye_lasers":
             # fully categorical, lookup table
             dataset = Dataset(kind=dataset_name)
 
@@ -43,23 +43,23 @@ for dataset_name in cs1_datasets:
             campaign = Campaign()
             campaign.set_param_space(dataset.param_space)
             campaign.set_value_space(dataset.value_space)
-            
+
             scalarizer = Scalarizer(
-                kind='Chimera', 
+                kind="Chimera",
                 value_space=dataset.value_space,
-                goals=['max', 'min', 'max'],
+                goals=["max", "min", "max"],
                 tolerances=[0.5, 0.5, 0.5],
-                absolutes=[False, False, False]
+                absolutes=[False, False, False],
             )
 
             evaluator = Evaluator(
-                planner=planner, 
+                planner=planner,
                 emulator=dataset,
                 campaign=campaign,
                 scalarizer=scalarizer,
             )
-        
-        elif dataset_name == 'redoxmers':
+
+        elif dataset_name == "redoxmers":
             # fully categorical, lookup table
             dataset = Dataset(kind=dataset_name)
 
@@ -69,22 +69,22 @@ for dataset_name in cs1_datasets:
             campaign = Campaign()
             campaign.set_param_space(dataset.param_space)
             campaign.set_value_space(dataset.value_space)
-            
+
             scalarizer = Scalarizer(
-                kind='Chimera', 
+                kind="Chimera",
                 value_space=dataset.value_space,
-                goals=['min', 'min', 'min'],
+                goals=["min", "min", "min"],
                 tolerances=[0.5, 0.5, 0.5],
-                absolutes=[False, False, False]
+                absolutes=[False, False, False],
             )
 
             evaluator = Evaluator(
-                planner=planner, 
+                planner=planner,
                 emulator=dataset,
                 campaign=campaign,
                 scalarizer=scalarizer,
             )
-            
+
         evaluator.optimize(num_iter=15)
-        
-        print('Done!')
+
+        print("Done!")

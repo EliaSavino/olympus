@@ -64,9 +64,7 @@ class ParticleSwarms(AbstractPlanner):
             options=self.options,
             dimensions=len(self.param_space),
         )
-        cost, pos = self.optimizer.optimize(
-            self._priv_evaluator, iters=self.max_iters
-        )
+        cost, pos = self.optimizer.optimize(self._priv_evaluator, iters=self.max_iters)
         self.is_converged = True
 
     def _ask(self):

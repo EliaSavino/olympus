@@ -93,15 +93,14 @@ class AbstractPlotter(Object):
     ):
         pass
 
-
     @abc.abstractmethod
     def _plot_pareto_front(
-        self, 
+        self,
         emulators,
-        planners, 
-        measurements, 
+        planners,
+        measurements,
         plot_file_name,
-        *args, 
+        *args,
         **kwargs,
     ):
         pass
@@ -109,11 +108,11 @@ class AbstractPlotter(Object):
     @abc.abstractmethod
     def _plot_hypervolume(
         self,
-        emulators, 
-        planners, 
+        emulators,
+        planners,
         measurements,
-        plot_file_name, 
-        *args, 
+        plot_file_name,
+        *args,
         **kwargs,
     ):
         pass
@@ -168,9 +167,7 @@ class AbstractPlotter(Object):
                 **kwargs,
             )
         elif kind == "traces_regret":
-            emulators, planners, measurements = self._get_traces_regret(
-                campaigns
-            )
+            emulators, planners, measurements = self._get_traces_regret(campaigns)
             self._plot_traces_regret(
                 emulators,
                 planners,
@@ -180,9 +177,7 @@ class AbstractPlotter(Object):
                 **kwargs,
             )
         elif kind == "traces_rank":
-            emulators, planners, measurements = self._get_traces_rank(
-                campaigns
-            )
+            emulators, planners, measurements = self._get_traces_rank(campaigns)
             self._plot_traces_rank(
                 emulators,
                 planners,
@@ -196,9 +191,7 @@ class AbstractPlotter(Object):
                 emulators,
                 planners,
                 measurements,
-            ) = self._get_traces_fraction_top_k(
-                campaigns, threshold, is_percent
-            )
+            ) = self._get_traces_fraction_top_k(campaigns, threshold, is_percent)
             self._plot_traces_fraction_top_k(
                 emulators,
                 planners,
@@ -260,17 +253,17 @@ class AbstractPlotter(Object):
                 planners,
                 measurements,
                 plot_file_name,
-                *args, 
+                *args,
                 **kwargs,
             )
-        elif kind == 'hypervolume':
+        elif kind == "hypervolume":
             emulators, planners, measurements = self._get_hypervolume(campaigns)
             self._plot_hypervolume(
                 emulators,
-                planners, 
+                planners,
                 measurements,
                 plot_file_name,
-                *args, 
+                *args,
                 **kwargs,
             )
         else:
@@ -292,9 +285,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
             elif emulator_type == "analytic":
                 # analytic surface
                 camp_emulator = f"analytic_{campaign.surface_kind}"
@@ -348,9 +339,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
                 # TODO: implement estimate of best objective value for the
                 # emulated datasets here
             elif emulator_type == "analytic":
@@ -408,9 +397,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
 
                 dataset = Dataset(kind=campaign.dataset_kind)
                 values = dataset.targets.values
@@ -475,9 +462,7 @@ class AbstractPlotter(Object):
     def _get_traces_moo():
         pass
 
-    def _get_traces_fraction_top_k(
-        self, campaigns, threshold, is_percent=False
-        ):
+    def _get_traces_fraction_top_k(self, campaigns, threshold, is_percent=False):
 
         # quickly validate the threshold argument
         if not (isinstance(threshold, float) or isinstance(threshold, int)):
@@ -505,9 +490,7 @@ class AbstractPlotter(Object):
 
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
 
                 dataset = Dataset(kind=campaign.dataset_kind)
                 values = dataset.targets.values
@@ -588,10 +571,7 @@ class AbstractPlotter(Object):
             for val_index in range(len(campaign_values)):
                 measurements[camp_emulator][planner]["idxs"].append(val_index)
                 measurements[camp_emulator][planner]["vals"].append(
-                    sum(
-                        val in campaign_values[:val_index]
-                        for val in sort_values
-                    )
+                    sum(val in campaign_values[:val_index] for val in sort_values)
                     / len(sort_values)
                 )  # fraction of top candidates
 
@@ -639,9 +619,7 @@ class AbstractPlotter(Object):
 
             if emulator_type == "numeric":
                 # lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
 
                 dataset = Dataset(kind=campaign.dataset_kind)
                 values = dataset.targets.values
@@ -761,9 +739,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
                 # TODO: implement estimate of best objective value for the
                 # emulated datasets here
             elif emulator_type == "analytic":
@@ -819,13 +795,11 @@ class AbstractPlotter(Object):
         planners = []
         measurements = {}
 
-        # check that the dimensionality of the value_space is 2 (we 
+        # check that the dimensionality of the value_space is 2 (we
         # currently only support 2 objectives for this plot )
-        if not len(campaigns[0].value_space)==2:
-            message = 'Olympus currently supports Pareto front plots for 2 objectives'
-            Logger.log(message, 'FATAL')
-
-
+        if not len(campaigns[0].value_space) == 2:
+            message = "Olympus currently supports Pareto front plots for 2 objectives"
+            Logger.log(message, "FATAL")
 
         for campaign in campaigns:
             # get the global optimum objective value for the campaign
@@ -839,9 +813,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
             elif emulator_type == "analytic":
                 # analytic surface
                 camp_emulator = f"analytic_{campaign.surface_kind}"
@@ -863,7 +835,7 @@ class AbstractPlotter(Object):
                     "pareto_front": [],
                 }
 
-            values =  campaign.observations.get_values(as_array=True, opposite=False)
+            values = campaign.observations.get_values(as_array=True, opposite=False)
             pareto_front = get_pareto(values)
 
             measurements[camp_emulator][planner]["vals"].append(values)
@@ -904,9 +876,7 @@ class AbstractPlotter(Object):
             emulator_type = campaign.get_emulator_type()
             if emulator_type == "numeric":
                 # neural network based emulator or lookup table for fully categorical
-                camp_emulator = (
-                    f"{campaign.model_kind}_{campaign.dataset_kind}"
-                )
+                camp_emulator = f"{campaign.model_kind}_{campaign.dataset_kind}"
             elif emulator_type == "analytic":
                 # analytic surface
                 camp_emulator = f"analytic_{campaign.surface_kind}"
@@ -927,7 +897,7 @@ class AbstractPlotter(Object):
                     "vals": [],
                 }
 
-            values =  campaign.observations.get_values(as_array=True, opposite=True)
+            values = campaign.observations.get_values(as_array=True, opposite=True)
             w_ref = np.amax(values, axis=0)
 
             hypervolume = get_hypervolume(values, w_ref)
@@ -948,11 +918,9 @@ class AbstractPlotter(Object):
 
         return emulators, planners, measurements
 
-
-
-    #----------------
+    # ----------------
     # helper methods
-    #----------------
+    # ----------------
 
     def _validate_plot_kind(self, problem_type, kind):
         # check to see if the kind of plot is within the supported plot kinds
@@ -979,9 +947,7 @@ class AbstractPlotter(Object):
             problem_type = "fully_continuous"
         elif param_types.count("categorical") == len(param_types):
             problem_type = "fully_categorical"
-        elif np.logical_and(
-            "continuous" in param_types, "categorical" in param_types
-        ):
+        elif np.logical_and("continuous" in param_types, "categorical" in param_types):
             problem_type = "mixed"
         if len(value_space) > 1:
             problem_type = "-".join([problem_type, "moo"])

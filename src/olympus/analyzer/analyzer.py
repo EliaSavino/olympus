@@ -68,8 +68,7 @@ class Analyzer(Object):
             samples = []
             for _ in range(NUM_BOOTS):
                 sample = [
-                    best_vals[idxs[_, :, __], __]
-                    for __ in range(best_vals.shape[1])
+                    best_vals[idxs[_, :, __], __] for __ in range(best_vals.shape[1])
                 ]
                 samples.append(sample)
             samples = np.array(samples)
@@ -84,9 +83,7 @@ class Analyzer(Object):
                     int((100 - ci_size) / 2 * (NUM_BOOTS - 1) / 100)
                 ]
                 upper_reductions[_] = sorted_reductions[
-                    int(
-                        (ci_size - (100 - ci_size) / 2) * (NUM_BOOTS - 1) / 100
-                    )
+                    int((ci_size - (100 - ci_size) / 2) * (NUM_BOOTS - 1) / 100)
                 ]
 
             return best_vals_red, {
@@ -97,9 +94,7 @@ class Analyzer(Object):
         else:
             raise NotImplementedError
 
-    def get_best_mean(
-        self, campaigns=None, locs=None, ci_method=None, ci_size=100
-    ):
+    def get_best_mean(self, campaigns=None, locs=None, ci_method=None, ci_size=100):
         return self._get_best_reduction(
             np.nanmean, campaigns, locs, ci_method=ci_method, ci_size=ci_size
         )

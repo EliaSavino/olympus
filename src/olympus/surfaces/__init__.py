@@ -16,9 +16,7 @@ class SurfaceLoader:
     def __getattr__(self, attr):
         if attr in ["Surface", "AbstractSurface"]:
             attr_file = SurfaceLoader.class_to_file(attr)
-            module = __import__(
-                f"olympus.surfaces.{attr_file}", fromlist=[attr]
-            )
+            module = __import__(f"olympus.surfaces.{attr_file}", fromlist=[attr])
             _class = getattr(module, attr)
             setattr(self, attr, _class)
             return _class
@@ -55,9 +53,7 @@ class SurfaceLoader:
     @staticmethod
     def import_surface(attr):
         attr_file = SurfaceLoader.class_to_file(attr)
-        module = __import__(
-            f"olympus.surfaces.surface_{attr_file}", fromlist=[attr]
-        )
+        module = __import__(f"olympus.surfaces.surface_{attr_file}", fromlist=[attr])
         _class = getattr(module, attr)
         return _class
 
@@ -68,9 +64,7 @@ class SurfaceLoader:
         for dir_name in glob.glob(f"{__home__}/surface_*"):
             surface_name = dir_name.split("/")[-1][8:]
             self.surface_files.append(surface_name)
-            self.surface_names.append(
-                SurfaceLoader.file_to_class(surface_name)
-            )
+            self.surface_names.append(SurfaceLoader.file_to_class(surface_name))
 
     def get_surfaces_list(self):
         return sorted(self.surface_names)

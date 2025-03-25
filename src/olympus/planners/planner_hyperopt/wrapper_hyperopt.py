@@ -98,9 +98,7 @@ class Hyperopt(AbstractPlanner):
     def _set_hp_trials(self):
         self._trials = Trials()
         if self._params is not None and len(self._params) > 0:
-            for tid, (param, loss) in enumerate(
-                zip(self._params, self._values)
-            ):
+            for tid, (param, loss) in enumerate(zip(self._params, self._values)):
                 idxs = {k: [tid] for k, v in param.items()}
                 vals = {k: [v] for k, v in param.items()}
                 hyperopt_trial = Trials().new_trial_docs(
@@ -123,7 +121,7 @@ class Hyperopt(AbstractPlanner):
 
     def _ask(self):
 
-        #print("TRIALS : ", self._trials.trials)
+        # print("TRIALS : ", self._trials.trials)
 
         # if self.num_generated > 1:
         #     print("TRIALS MISC: ", self._trials.trials[-1]["misc"])
@@ -153,15 +151,13 @@ class Hyperopt(AbstractPlanner):
                     value[0]
                 ]  # reference option
 
-        return [ParameterVector(
-            dict=return_params, param_space=self.param_space
-        )]
+        return [ParameterVector(dict=return_params, param_space=self.param_space)]
 
 
 # -----------
 # DEBUGGING
 # -----------
-if __name__ == '__main__':
+if __name__ == "__main__":
     PARAM_TYPE = "categorical"
 
     NUM_RUNS = 40
@@ -174,10 +170,8 @@ if __name__ == '__main__':
     )
     from olympus.surfaces import Surface
 
-
     def surface(x):
         return np.sin(8 * x)
-
 
     if PARAM_TYPE == "continuous":
         param_space = ParameterSpace()
@@ -200,7 +194,6 @@ if __name__ == '__main__':
                 sample_arr = sample.to_array()
                 measurement = surface(sample_arr.reshape((1, sample_arr.shape[0])))
                 campaign.add_observation(sample_arr, measurement[0])
-
 
     elif PARAM_TYPE == "categorical":
 
@@ -229,7 +222,6 @@ if __name__ == '__main__':
             if [sample_arr[0], sample_arr[1]] == OPT:
                 print(f"FOUND OPTIMUM AFTER {iter+1} ITERATIONS!")
                 break
-
 
     elif PARAM_TYPE == "mixed":
 
@@ -267,7 +259,5 @@ if __name__ == '__main__':
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

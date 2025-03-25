@@ -18,9 +18,7 @@ def infer_problem_type(param_space):
         problem_type = "fully_continuous"
     elif param_types.count("categorical") == len(param_types):
         problem_type = "fully_categorical"
-    elif np.logical_and(
-        "continuous" in param_types, "categorical" in param_types
-    ):
+    elif np.logical_and("continuous" in param_types, "categorical" in param_types):
         problem_type = "mixed"
     return problem_type
 
@@ -97,9 +95,7 @@ def propose_randomly(num_proposals, param_space, use_descriptors):
                 sample.append(p)
                 raw_sample.append(p)
             elif param.type == "discrete":
-                num_options = int(
-                    ((param.high - param.low) / param.stride) + 1
-                )
+                num_options = int(((param.high - param.low) / param.stride) + 1)
                 options = np.linspace(param.low, param.high, num_options)
                 p = np.random.choice(options, size=None, replace=False)
                 sample.append(p)
@@ -158,9 +154,9 @@ def project_to_olymp(
     olymp_samples = {}
     if has_descriptors:
         # simply look up the index
-        ind = np.where(
-            np.all(choices_feat.detach().numpy() == results_np, axis=1)
-        )[0][0]
+        ind = np.where(np.all(choices_feat.detach().numpy() == results_np, axis=1))[0][
+            0
+        ]
         sample = choices_cat[ind]
         for elem, name in zip(sample, [p.name for p in param_space]):
             olymp_samples[name] = elem
@@ -185,9 +181,7 @@ def project_to_olymp(
                 pass
             else:
                 # if categorical, scan the one-hot encoded portion
-                cat_vec = results_np[
-                    idx_counter : idx_counter + len(param.options)
-                ]
+                cat_vec = results_np[idx_counter : idx_counter + len(param.options)]
                 argmin = get_closest_ohe(cat_vec)
                 sample = param.options[argmin]
                 idx_counter += len(param.options)

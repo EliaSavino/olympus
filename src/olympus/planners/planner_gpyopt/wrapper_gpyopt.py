@@ -38,7 +38,7 @@ class Gpyopt(AbstractPlanner):
 
     def _vect_to_ints(self, vec, precision=1e4):
         vec = vec / np.amin(vec)
-        vec = np.around(vec*precision,0).astype(int)
+        vec = np.around(vec * precision, 0).astype(int)
         return vec
 
     def _set_param_space(self, param_space):
@@ -63,7 +63,7 @@ class Gpyopt(AbstractPlanner):
                 self.has_categorical = True
             elif param.type == "discrete":
                 # make a map between discrete options and an array of integers that can be referenced later
-                #options = self._vect_to_ints(param.options)
+                # options = self._vect_to_ints(param.options)
 
                 param_dict = {
                     "name": param.name,
@@ -81,9 +81,7 @@ class Gpyopt(AbstractPlanner):
         self.observations = observations
         self._params = self.observations.get_params(as_array=True)
         self._values = np.array(
-            self.observations.get_values(
-                as_array=True, opposite=self.flip_measurements
-            )
+            self.observations.get_values(as_array=True, opposite=self.flip_measurements)
         )
 
         # need to inflate the shape, I guess (at least 2d)
@@ -145,9 +143,7 @@ class Gpyopt(AbstractPlanner):
                 for param_ix, suggestion in enumerate(array[batch_ix]):
                     if self._param_space[param_ix]["type"] == "categorical":
                         array_olymp.append(
-                            self._param_space[param_ix]["original"][
-                                int(suggestion)
-                            ]
+                            self._param_space[param_ix]["original"][int(suggestion)]
                         )
                     # elif self._param_space[param_ix]["type"] == "discrete":
                     #     ix = list(self._param_space[param_ix]["domain"]).index(suggestion)

@@ -29,7 +29,6 @@ from .surfaces import (
 
 
 class Olympus(Object):
-
     """Master class of the olympus package"""
 
     def __init__(self, *args, **kwargs):
@@ -112,18 +111,14 @@ class Olympus(Object):
         # param type compatibility
         if surface in list_cont_surfaces():
             if not "continuous" in self.planner.PARAM_TYPES:
-                message = (
-                    f"Planner {planner} does not support continuous parameters"
-                )
+                message = f"Planner {planner} does not support continuous parameters"
                 Logger.log(message, "FATAL")
         elif surface in list_cat_surfaces():
             if not "categorical" in self.planner.PARAM_TYPES:
                 message = f"Planner {planner} does not support categorical parameters"
                 Logger.log(message, "FATAL")
 
-        self.surface = Surface(
-            kind=surface, param_dim=param_dim, num_opts=num_opts
-        )
+        self.surface = Surface(kind=surface, param_dim=param_dim, num_opts=num_opts)
 
         if len(self.surface.value_space) > 1 and not scalarizer:
             message = f"You must pass a scalarizer instance for multiobjective optimization in Olympus"

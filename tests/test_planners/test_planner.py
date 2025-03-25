@@ -90,9 +90,7 @@ class MyPlannerAlg(AbstractPlanner):
             )
             new_params.append(new_param)
 
-        param_vector = ParameterVector().from_array(
-            new_params, self.param_space
-        )
+        param_vector = ParameterVector().from_array(new_params, self.param_space)
         return param_vector
 
 

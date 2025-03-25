@@ -7,20 +7,20 @@ from olympus.databases import Database
 
 olymp = Olympus()
 planners = [
-    'RandomSearch',
+    "RandomSearch",
     #'Botorch', 'Gryffin',
     # 'Hyperopt', 'Smac', 'Genetic'
 ]
-database = Database(kind='sqlite')
+database = Database(kind="sqlite")
 
 olymp.benchmark(
-        dataset='suzuki_edbo',
-        planners=planners,
-        database=database,
-        num_ind_runs=40,
-        num_iter=200,
+    dataset="suzuki_edbo",
+    planners=planners,
+    database=database,
+    num_ind_runs=40,
+    num_iter=200,
 )
 
 
 observations = [campaign.observations for campaign in database]
-pickle.dump(observations, open('results.pkl', 'wb'))
+pickle.dump(observations, open("results.pkl", "wb"))

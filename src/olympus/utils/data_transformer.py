@@ -37,8 +37,7 @@ class DataTransformer(Object):
         # note that we select the back transformations in reversed order
         self.transformations = transformations
         self._transforms = [
-            getattr(self, f"_forward_{trans}")
-            for trans in self.transformations
+            getattr(self, f"_forward_{trans}") for trans in self.transformations
         ]
         self._back_transforms = [
             getattr(self, f"_backward_{trans}")
@@ -50,9 +49,7 @@ class DataTransformer(Object):
         self._stddev = None
         self._min = None
         self._max = None
-        self._periodic_info = (
-            {}
-        )  # each key is a column index, each value is low/high
+        self._periodic_info = {}  # each key is a column index, each value is low/high
 
         # other info
         self.trained = False
@@ -183,9 +180,7 @@ class DataTransformer(Object):
         return data * self._stable_stddev + self._mean
 
     def _forward_normalize(self, data):
-        return (data - self._stable_min) / (
-            self._stable_max - self._stable_min
-        )
+        return (data - self._stable_min) / (self._stable_max - self._stable_min)
 
     def _backward_normalize(self, data):
         return (self._stable_max - self._stable_min) * data + self._stable_min
@@ -275,10 +270,7 @@ class DataTransformer(Object):
                     f"available transformation."
                 )
 
-        if (
-            "periodic" in transformations
-            and transformations.index("periodic") != 0
-        ):
+        if "periodic" in transformations and transformations.index("periodic") != 0:
             message = "periodic transform is allowed only as the first transformation"
             Logger.log(message, "ERROR")
 
@@ -293,7 +285,7 @@ class DataTransformer(Object):
 # --------------------------------/
 
 
-def cube_to_simpl(cubes, alpha=4.):
+def cube_to_simpl(cubes, alpha=4.0):
     """
     converts and n-cube (used for optimization) to an n+1 simplex (used
     as features for emulator)
@@ -328,9 +320,7 @@ def simpl_to_cube(simpls):
         cube = np.zeros(len(simpl) - 1)
 
         for i in range(len(cube)):
-            cube[i] = (simpl[i] * (sums - alpha)) / (
-                simpl[i] * (sums - alpha) - 1
-            )
+            cube[i] = (simpl[i] * (sums - alpha)) / (simpl[i] * (sums - alpha) - 1)
 
         features.append(cube)
 
@@ -340,6 +330,7 @@ def simpl_to_cube(simpls):
 # ------------------------------------
 # CATEGORICAL PARAMS TO OHE FEATURES
 # ------------------------------------
+
 
 def cat_param_to_feat(param, val):
     """convert the option selection of a categorical variable to

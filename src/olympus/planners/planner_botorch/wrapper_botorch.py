@@ -52,9 +52,7 @@ class CategoricalSingleTaskGP(ExactGP, GPyTorchModel):
         self.mean_module = ConstantMean()
         self.covar_module = ScaleKernel(
             base_kernel=CategoricalKernel(
-                ard_num_dims=train_Y.shape[
-                    -1
-                ]  # ARD for all categorical dimensions
+                ard_num_dims=train_Y.shape[-1]  # ARD for all categorical dimensions
             )
         )
         self.to(train_X)
@@ -66,7 +64,6 @@ class CategoricalSingleTaskGP(ExactGP, GPyTorchModel):
 
 
 class Botorch(AbstractPlanner):
-
     """Wrapper for GP-based Bayesiam optimization with BoTorch
 
     Args:
@@ -122,10 +119,11 @@ class Botorch(AbstractPlanner):
         # final check: if the user has overwritten the ability to use descriptors, then
         # we set self.has_descriptors to False
         if not self.use_descriptors and self.has_descriptors:
-            message = 'Current dataset has descriptors, but user has overidden their use'
-            Logger.log(message, 'WARNING')
+            message = (
+                "Current dataset has descriptors, but user has overidden their use"
+            )
+            Logger.log(message, "WARNING")
             self.has_descriptors = False
-
 
     def build_train_data(self):
         """build the training dataset at each iteration"""
@@ -165,10 +163,7 @@ class Botorch(AbstractPlanner):
         )
         self._stds_y = np.where(self._stds_y == 0.0, 1.0, self._stds_y)
 
-        if (
-            not self.problem_type == "fully_categorical"
-            and not self.has_descriptors
-        ):
+        if not self.problem_type == "fully_categorical" and not self.has_descriptors:
             # forward transform on features (min max)
             train_x = forward_normalize(train_x, self._mins_x, self._maxs_x)
         # forward transform on targets (standardization)
@@ -186,7 +181,7 @@ class Botorch(AbstractPlanner):
         self._params = (
             observations.get_params()
         )  # string encodings of categorical params
-        # TODO: taking not of flip_measurements is a hack - why is this needed? 
+        # TODO: taking not of flip_measurements is a hack - why is this needed?
         self._values = observations.get_values(
             as_array=True, opposite=np.logical_not(self.flip_measurements)
         )
@@ -214,7 +209,9 @@ class Botorch(AbstractPlanner):
 
         if len(self._values) < self.num_init_design:
             # sample using initial design strategy
-            sample, raw_sample = propose_randomly(1, self.param_space, self.use_descriptors)
+            sample, raw_sample = propose_randomly(
+                1, self.param_space, self.use_descriptors
+            )
             return_params = ParameterVector().from_array(
                 raw_sample[0], self.param_space
             )
@@ -238,9 +235,7 @@ class Botorch(AbstractPlanner):
                 # based on the HammingDistance
                 if self.has_descriptors:
                     # we have some descriptors, use the Matern kernel
-                    model = SingleTaskGP(
-                        self.train_x_scaled, self.train_y_scaled
-                    )
+                    model = SingleTaskGP(self.train_x_scaled, self.train_y_scaled)
                 else:
                     # if we have no descriptors, use a Categorical kernel
                     # based on the HammingDistance
@@ -314,9 +309,7 @@ class Botorch(AbstractPlanner):
                 and not self.has_descriptors
             ):
                 # reverse transform the inputs
-                results_np = reverse_normalize(
-                    results_np, self._mins_x, self._maxs_x
-                )
+                results_np = reverse_normalize(results_np, self._mins_x, self._maxs_x)
 
             if choices_feat is not None:
                 choices_feat = reverse_normalize(
@@ -331,9 +324,7 @@ class Botorch(AbstractPlanner):
                 choices_feat=choices_feat,
                 choices_cat=choices_cat,
             )
-            return_params = ParameterVector().from_dict(
-                sample, self.param_space
-            )
+            return_params = ParameterVector().from_dict(sample, self.param_space)
 
         return return_params
 
@@ -443,7 +434,5 @@ if __name__ == "__main__":
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

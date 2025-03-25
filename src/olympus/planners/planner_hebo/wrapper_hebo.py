@@ -25,7 +25,6 @@ class Hebo(AbstractPlanner):
         random_seed=None,
         model_config=None,
     ):
-
         """
         Bayesian optimsation library developped by Huawei Noahs Ark
         Decision Making and Reasoning (DMnR) lab.
@@ -61,8 +60,7 @@ class Hebo(AbstractPlanner):
                     len(self.olympus_encoding)
                 )  # integers from 0, ..., num_opts
                 self.discrete_param_encodings[param.name] = {
-                    i: o
-                    for i, o in zip(self.int_encoding, self.olympus_encoding)
+                    i: o for i, o in zip(self.int_encoding, self.olympus_encoding)
                 }
                 param_dict = {
                     "name": param.name,
@@ -154,9 +152,7 @@ class Hebo(AbstractPlanner):
             # samples = self.opt.quasi_sample(1, fix_input=None)
             sample, raw_sample = propose_randomly(1, self.param_space)
 
-            return_params = ParameterVector().from_list(
-                raw_sample[0], self.param_space
-            )
+            return_params = ParameterVector().from_list(raw_sample[0], self.param_space)
 
         else:
             # will be a dataframe
@@ -164,9 +160,7 @@ class Hebo(AbstractPlanner):
 
             # generate a dictionary and convert to olympus
             samples = samples.to_dict("r")[0]
-            return_params = ParameterVector().from_dict(
-                samples, self.param_space
-            )
+            return_params = ParameterVector().from_dict(samples, self.param_space)
 
         return return_params
 
@@ -276,7 +270,5 @@ if __name__ == "__main__":
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

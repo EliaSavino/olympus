@@ -34,9 +34,7 @@ class Config(Object):
         # determine spacing - additional numbers is to ensure a minimum spacing due to the headers
         max_prop_len = max([self.max_prop_len, 9])
         max_attr_len = max([len(str(att)) for att in self.attrs] + [5])
-        max_type_len = max(
-            [len(str(type(att).__name__)) for att in self.attrs] + [4]
-        )
+        max_type_len = max([len(str(type(att).__name__)) for att in self.attrs] + [4])
         total = max_prop_len + max_attr_len + max_type_len + 6
 
         # Title

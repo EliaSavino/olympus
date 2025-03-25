@@ -16,7 +16,7 @@ class Michalewicz(AbstractSurface):
             noise (Noise): Noise object that injects noise into the evaluations of the surface. Default is None.
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -104,9 +104,7 @@ class Michalewicz(AbstractSurface):
         params = np.pi * params  # rescale onto [0, pi]
         result = 0.0
         for i, x in enumerate(params):
-            result -= np.sin(x) * np.sin((i + 1) * (x**2) / np.pi) ** (
-                2 * self.m
-            )
+            result -= np.sin(x) * np.sin((i + 1) * (x**2) / np.pi) ** (2 * self.m)
 
         if self.noise is None:
             return result

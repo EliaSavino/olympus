@@ -70,8 +70,7 @@ class Smac(AbstractPlanner):
                     len(self.olympus_encoding)
                 )  # integers from 0, ..., num_opts
                 self.discrete_param_encodings[param.name] = {
-                    i: o
-                    for i, o in zip(self.int_encoding, self.olympus_encoding)
+                    i: o for i, o in zip(self.int_encoding, self.olympus_encoding)
                 }
                 self._param_space.append(
                     UniformIntegerHyperparameter(
@@ -260,7 +259,5 @@ if __name__ == "__main__":
             # sample = samples[0]
             sample_arr = samples.to_array()
             measurement = surface(sample_arr)
-            print(
-                f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}"
-            )
+            print(f"ITER : {iter}\tSAMPLES : {samples}\t MEASUREMENT : {measurement}")
             campaign.add_observation(sample_arr, measurement)

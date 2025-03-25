@@ -19,9 +19,7 @@ from olympus.planners import Grid
         (2, 30, True, 42),
     ],
 )
-def test_planner_ask_tell(
-    two_param_space, levels, budget, shuffle, random_seed
-):
+def test_planner_ask_tell(two_param_space, levels, budget, shuffle, random_seed):
     planner = Grid(
         goal="minimize",
         levels=levels,

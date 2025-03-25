@@ -21,8 +21,11 @@ class Parego(AbstractScalarizer):
         sum_theta = np.sum(theta)
         theta = theta / sum_theta
 
-        signs = [1 if self.goals[idx]=='min' else -1 for idx in range(len(self.value_space))]
-        objectives = objectives*signs
+        signs = [
+            1 if self.goals[idx] == "min" else -1
+            for idx in range(len(self.value_space))
+        ]
+        objectives = objectives * signs
         norm_objectives = self.normalize(objectives)
 
         theta_f = theta * norm_objectives
@@ -59,9 +62,7 @@ class Parego(AbstractScalarizer):
         provided_args = list(kwargs.keys())
         missing_args = list(set(req_args).difference(provided_args))
         if not missing_args == []:
-            message = (
-                f'Missing required ParEGO arguments {", ".join(missing_args)}'
-            )
+            message = f'Missing required ParEGO arguments {", ".join(missing_args)}'
             Logger.log(message, "FATAL")
 
 

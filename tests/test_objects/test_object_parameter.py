@@ -104,9 +104,7 @@ def test_discrete_parameters(name, low, high, stride):
     ],
 )
 def test_categorical_parameters(name, options, descriptors):
-    param = ParameterCategorical(
-        name=name, options=options, descriptors=descriptors
-    )
+    param = ParameterCategorical(name=name, options=options, descriptors=descriptors)
     for attr, value in zip(
         ["name", "options", "descriptors"], [name, options, descriptors]
     ):

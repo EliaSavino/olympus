@@ -13,7 +13,6 @@ from olympus import Logger
 # Olympus Object class
 # ====================
 class Object:
-
     """Abstraction of a dictionary
 
     - facilitates declaration of defaults
@@ -117,10 +116,7 @@ class Object:
 
     def _validate(self, **kwargs):
         for key, value in kwargs.items():
-            if (
-                not value
-                in getattr(self, "ATT_{}".format(key.upper()))["valid"]
-            ):
+            if not value in getattr(self, "ATT_{}".format(key.upper()))["valid"]:
                 return False
         return True
 
@@ -242,15 +238,11 @@ class ABCMeta(NativeABCMeta):
         abstract_attributes = {
             name
             for name in dir(instance)
-            if getattr(
-                getattr(instance, name), "__is_abstract_attribute__", False
-            )
+            if getattr(getattr(instance, name), "__is_abstract_attribute__", False)
         }
         if abstract_attributes:
             raise NotImplementedError(
                 "Can't instantiate {0} without abstract "
-                "attributes: {1}".format(
-                    cls.__name__, ", ".join(abstract_attributes)
-                )
+                "attributes: {1}".format(cls.__name__, ", ".join(abstract_attributes))
             )
         return instance

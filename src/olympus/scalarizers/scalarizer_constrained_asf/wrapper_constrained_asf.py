@@ -32,7 +32,5 @@ class ConstrainedAsf(AbstractScalarizer):
         provided_args = kwargs.keys()
         missing_args = list(set(req_args).difference(provided_args))
         if not missing_args == []:
-            message = (
-                f'Missing required c-ASF arguments {", ".join(missing_args)}'
-            )
+            message = f'Missing required c-ASF arguments {", ".join(missing_args)}'
             Logger.log(message, "FATAL")

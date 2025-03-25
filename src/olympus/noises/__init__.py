@@ -53,9 +53,7 @@ class NoiseLoader:
     @staticmethod
     def import_noise(attr):
         attr_file = NoiseLoader.class_to_file(attr)
-        module = __import__(
-            f"olympus.noises.noise_{attr_file}", fromlist=[attr]
-        )
+        module = __import__(f"olympus.noises.noise_{attr_file}", fromlist=[attr])
         _class = getattr(module, attr)
         return _class
 

@@ -8,7 +8,6 @@ from olympus.surfaces import AbstractSurface
 
 
 class CatSlope(AbstractSurface):
-
     """The Slope surface is constructed such that the response linearly increases with the index of the
     option along each dimension in the reference ordering. As such, the Slope surface presents a generalization of a plane
     to categorical domains
@@ -19,7 +18,7 @@ class CatSlope(AbstractSurface):
         For these surfaces, the same descriptors are used for each dimension
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(param_type="categorical", **locals())
 
     @property

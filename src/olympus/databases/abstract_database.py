@@ -12,7 +12,6 @@ from olympus.utils import generate_id
 
 
 class AbstractDatabase(Object):
-
     """bridge to specific databases; implements in-memory cache"""
 
     ATT_KIND = {"type": "string", "default": "abstract"}
@@ -42,9 +41,7 @@ class AbstractDatabase(Object):
 
     @property
     def file_name(self):
-        return os.path.join(
-            self.path, "{}.{}".format(self.name, self.file_type)
-        )
+        return os.path.join(self.path, "{}.{}".format(self.name, self.file_type))
 
     @property
     def file_types(self):
@@ -58,9 +55,7 @@ class AbstractDatabase(Object):
     def from_file(self, file_name):
         self._from_file_name(file_name)
         if not self.db_exists:
-            Logger.log(
-                "Could not find database file {}".format(file_name), "ERROR"
-            )
+            Logger.log("Could not find database file {}".format(file_name), "ERROR")
             return None
         self._load_db()
 

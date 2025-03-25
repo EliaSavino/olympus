@@ -14,7 +14,7 @@ class Rosenbrock(AbstractSurface):
             noise (Noise): Noise object that injects noise into the evaluations of the surface. Default is None.
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(**locals())
 
     @property
@@ -36,10 +36,7 @@ class Rosenbrock(AbstractSurface):
         params = 4 * params - 2  # rescale onto [-2, 2]
         result = 0
         for index, element in enumerate(params[:-1]):
-            result += (
-                100 * (params[index + 1] - element**2) ** 2
-                + (1 - element) ** 2
-            )
+            result += 100 * (params[index + 1] - element**2) ** 2 + (1 - element) ** 2
 
         if self.noise is None:
             return result

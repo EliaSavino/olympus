@@ -8,7 +8,6 @@ from olympus.surfaces import AbstractSurface
 
 
 class CatDejong(AbstractSurface):
-
     """Categorical version of the Dejong surface
     To be evaluated on the hypercube
     x_i in [-5.12, 5.12] for i = 1, ..., d
@@ -19,7 +18,7 @@ class CatDejong(AbstractSurface):
         For these surfaces, the same descriptors are used for each dimension
         """
         value_dim = 1
-        task = 'regression'
+        task = "regression"
         AbstractSurface.__init__(param_type="categorical", **locals())
 
     @property

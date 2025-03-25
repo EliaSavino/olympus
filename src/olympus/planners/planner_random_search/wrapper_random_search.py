@@ -50,7 +50,7 @@ class RandomSearch(AbstractPlanner):
                 opts_.append(param.options)
                 self.has_cat_discr = True
             elif param.type == "discrete":
-                if param.options!=[]:
+                if param.options != []:
                     opts_.append(param.options)
                 else:
                     opts_.append(np.arange(param.low, param.high, param.stride))
@@ -76,9 +76,7 @@ class RandomSearch(AbstractPlanner):
                 # do not need to remove parameters, sample randomly with replacement
                 indices = np.arange(len(self.opts))
                 np.random.shuffle(indices)
-                cat_discr_vals = self.opts[
-                    indices[0]
-                ]  # np.random.choice(self.opts)
+                cat_discr_vals = self.opts[indices[0]]  # np.random.choice(self.opts)
             else:
                 # fully categorical space, remove selected options to avoid
                 # iterate through by iteration nunber
@@ -91,15 +89,14 @@ class RandomSearch(AbstractPlanner):
             if param.type == "continuous":
                 val = np.random.uniform(low=param.low, high=param.high)
             elif param.type in ["categorical", "discrete"]:
-                if param.type=='categorical':
+                if param.type == "categorical":
                     val = cat_discr_vals[cat_discr_ind]
-                elif param.type=='discrete':
+                elif param.type == "discrete":
                     val = float(cat_discr_vals[cat_discr_ind])
                 cat_discr_ind += 1
             else:
                 raise NotImplementedError
             vals.append(val)
-
 
         param_vec = ParameterVector().from_list(vals, self.param_space)
         return [param_vec]
